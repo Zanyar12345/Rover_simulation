@@ -1,0 +1,30 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    wheel_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    steer_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+
+wheel_velocity_controller:
+  ros__parameters:
+    joints:
+      - sol_arka_drive_to_wheel
+      - sag_arka_drive_to_wheel
+      - sol_on_drive_to_wheel
+      - sag_on_drive_to_wheel
+
+
+steer_position_controller:
+  ros__parameters:
+    joints:
+      - sag_arka_gearbox_to_mil
+      - sol_arka_gearbox_to_mil
+      - sol_on_gearbox_to_mil
+      - sag_on_gearbox_to_mil

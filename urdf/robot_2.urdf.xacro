@@ -1,0 +1,337 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hubba">
+<!-- 
+    <gazebo>
+        <plugin name="differential_drive_linkage" filename="libgazebo_ros_differential_gear.so">
+            <joint_1>base_to_sag_legmil</joint_1>
+            <joint_2>base_to_sol_legmil</joint_2>
+            <differential_joint>base_to_diff_bar</differential_joint>
+            <gear_ratio>1.0</gear_ratio>
+        </plugin>
+    </gazebo> -->
+
+    <material name="yellow">
+        <color rgba="1 1 0 1"/>
+    </material>
+    <material name="red">
+        <color rgba="0 0 1 1"/>
+    </material>
+
+    <link name="base_link">
+        <visual>
+            <geometry><box size="0.64 0.98 0.3" /></geometry>
+            <origin xyz="0 0 0.60" rpy="0 0 0" />
+            <material name="yellow" />
+        </visual>
+        <collision>
+            <geometry><box size="0.64 0.98 0.3" /></geometry>
+            <origin xyz="0 0 0.60" rpy="0 0 0" />
+        </collision>
+        <inertial>
+            <mass value="56.0"/>
+            <origin xyz="0 0 0.60" rpy="0 0 0"/> 
+            <inertia ixx="4.91" ixy="0" ixz="0" iyy="2.33" iyz="0" izz="6.40"/>
+        </inertial>
+    </link>
+    <gazebo reference="base_link">
+        <material>Gazebo/Yellow</material>
+    </gazebo>
+
+    <link name="diff_bar">
+        <visual>
+            <geometry><box size="0.85 0.05 0.05" /></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="red" />
+        </visual>
+        <collision>
+            <geometry><box size="0.85 0.05 0.05" /></geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <inertial>
+            <mass value="2.0"/> 
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.1"/>
+        </inertial>
+    </link>
+    <gazebo reference="diff_bar">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+    <joint name="base_to_diff_bar" type="revolute">
+        <parent link="base_link"/>
+        <child link="diff_bar"/>
+        <origin xyz="0 0 0.40" rpy="0 0 0"/> 
+        <axis xyz="0 0 1"/> 
+        <limit lower="-0.5" upper="0.5" effort="1000" velocity="1.0"/> 
+        <dynamics damping="1.0" friction="1.0"/> 
+    </joint>
+
+    <xacro:macro name="wheel_assembly" params="prefix suffix parent_link reflect_x reflect_y">
+        
+        <link name="${prefix}_${suffix}_kutu">
+            <visual>
+                <geometry><box size="0.125 0.15 0.11" /></geometry>
+                <material name="yellow" />
+            </visual>
+            <collision>
+                <geometry><box size="0.125 0.15 0.11" /></geometry>
+            </collision>
+            <inertial>
+                <mass value="0.5"/>
+                <inertia ixx="0.002" ixy="0" ixz="0" iyy="0.002" iyz="0" izz="0.002"/>
+            </inertial>
+        </link>
+        <gazebo reference="${prefix}_${suffix}_kutu"><material>Gazebo/Yellow</material></gazebo>
+
+        <link name="${prefix}_${suffix}_gearbox">
+            <visual>
+                <geometry><box size="0.08 0.10 0.055" /></geometry>
+                <material name="yellow" />
+            </visual>
+            <collision>
+                 <geometry><box size="0.08 0.10 0.055" /></geometry>
+            </collision>
+            <inertial>
+                <mass value="0.5"/>
+                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            </inertial>
+        </link>
+        <gazebo reference="${prefix}_${suffix}_gearbox"><material>Gazebo/Yellow</material></gazebo>
+
+        <link name="${prefix}_${suffix}_mil">
+            <visual>
+                <geometry><cylinder radius="0.01" length="0.12"/></geometry>
+                <origin xyz="0 0 0" rpy="0 0 ${pi/2}" />
+                <material name="red" />
+            </visual>
+            <collision>
+                <geometry><cylinder radius="0.01" length="0.12"/></geometry>
+                <origin xyz="0 0 0" rpy="0 0 ${pi/2}" />
+            </collision>
+            <inertial>
+                <mass value="0.2"/>
+                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            </inertial>
+        </link>
+        <gazebo reference="${prefix}_${suffix}_mil"><material>Gazebo/Blue</material></gazebo>
+
+        <link name="${prefix}_${suffix}_steering">
+            <visual>
+                <geometry><box size="0.16 0.05 0.03" /></geometry>
+                <material name="yellow" />
+            </visual>
+            <collision>
+                <geometry><box size="0.16 0.05 0.03" /></geometry>
+            </collision>
+            <inertial>
+                <mass value="0.2"/>
+                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            </inertial>
+        </link>
+        <gazebo reference="${prefix}_${suffix}_steering"><material>Gazebo/Yellow</material></gazebo>
+
+        <link name="${prefix}_${suffix}_drive_prf">
+            <visual>
+                <geometry><box size="0.07 0.05 0.15" /></geometry>
+                <material name="yellow" />
+            </visual>
+            <collision>
+                <geometry><box size="0.07 0.05 0.15" /></geometry>
+            </collision>
+            <inertial>
+                <mass value="0.5"/>
+                <inertia ixx="0.002" ixy="0" ixz="0" iyy="0.002" iyz="0" izz="0.002"/>
+            </inertial>
+        </link>
+        <gazebo reference="${prefix}_${suffix}_drive_prf"><material>Gazebo/Yellow</material></gazebo>
+
+        <link name="${prefix}_${suffix}_wheel">
+            <visual>
+                <geometry><cylinder radius="0.09" length="0.12"/></geometry>
+                <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+                <material name="yellow" />
+            </visual>
+            <collision>
+                <geometry><cylinder radius="0.09" length="0.12"/></geometry>
+                <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+            </collision>
+            <inertial>
+                <mass value="3.0"/> 
+                <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+                <inertia ixx="0.05" ixy="0" ixz="0" iyy="0.05" iyz="0" izz="0.05"/>
+            </inertial>
+        </link>
+        
+        <gazebo reference="${prefix}_${suffix}_wheel">
+            <material>Gazebo/Black</material> 
+            <mu1>1.0</mu1> 
+            <mu2>1.0</mu2> 
+            <kp>1000000.0</kp> 
+            <kd>1.0</kd> 
+        </gazebo>
+
+        <joint name="${parent_link}_to_${prefix}_${suffix}_kutu" type="fixed">
+            <parent link="${parent_link}"/>
+            <child link="${prefix}_${suffix}_kutu"/>
+            <origin xyz="0 ${0.47 * reflect_x} -0.025" rpy="0 0 0"/>
+        </joint>
+
+        <joint name="${prefix}_${suffix}_kutu_to_gearbox" type="fixed">
+            <parent link="${prefix}_${suffix}_kutu"/>
+            <child link="${prefix}_${suffix}_gearbox"/>
+            <origin xyz="0 0 -0.085" rpy="0 0 0"/>
+        </joint>
+
+        <joint name="${prefix}_${suffix}_gearbox_to_mil" type="continuous">
+            <parent link="${prefix}_${suffix}_gearbox"/>
+            <child link="${prefix}_${suffix}_mil"/>
+            <axis xyz="0 0 1"/>
+            <origin xyz="0 ${-0.01 * reflect_x} -0.06" rpy="0 0 0"/>
+        </joint>
+
+        <joint name="${prefix}_${suffix}_mil_to_steering" type="fixed">
+            <parent link="${prefix}_${suffix}_mil"/>
+            <child link="${prefix}_${suffix}_steering"/>
+            <origin xyz="${-0.035 * reflect_y} 0 -0.06" rpy="0 0 0"/>
+        </joint>
+
+        <joint name="${prefix}_${suffix}_steering_to_drive" type="fixed">
+            <parent link="${prefix}_${suffix}_steering"/>
+            <child link="${prefix}_${suffix}_drive_prf"/>
+            <origin xyz="${-0.045 * reflect_y} 0 -0.09" rpy="0 0 0"/>
+        </joint>
+
+        <joint name="${prefix}_${suffix}_drive_to_wheel" type="continuous">
+            <parent link="${prefix}_${suffix}_drive_prf"/>
+            <child link="${prefix}_${suffix}_wheel"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="${0.10 * reflect_y} 0 -0.08" rpy="0 0 0"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="rover_leg" params="prefix reflect_y">
+        <link name="${prefix}_legmil">
+            <visual>
+                <geometry><cylinder radius="0.03" length="0.1"/></geometry>
+                <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+                <material name="yellow" />
+            </visual>
+            <collision>
+                <geometry><cylinder radius="0.03" length="0.1"/></geometry>
+                <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+            </collision>
+            <inertial>
+                <mass value="1.0"/>
+                <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+            </inertial>
+        </link>
+        <gazebo reference="${prefix}_legmil"><material>Gazebo/Yellow</material></gazebo>
+
+        <link name="${prefix}_prfleg">
+            <visual>
+                <geometry><box size="0.12 0.12 0.17" /></geometry>
+                <material name="yellow" />
+            </visual>
+            <collision>
+                <geometry><box size="0.12 0.12 0.17" /></geometry>
+            </collision>
+            <inertial>
+                <mass value="1.0"/>
+                <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+            </inertial>
+        </link>
+        <gazebo reference="${prefix}_prfleg"><material>Gazebo/Yellow</material></gazebo>
+
+        <link name="${prefix}_bacak">
+            <visual>
+                <geometry><cylinder radius="0.04" length="0.85"/></geometry>
+                <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+                <material name="yellow" />
+            </visual>
+            <collision>
+                <geometry><cylinder radius="0.04" length="0.85"/></geometry>
+                <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+            </collision>
+             <inertial>
+                <mass value="3.0"/>
+                <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+            </inertial>
+        </link>
+        <gazebo reference="${prefix}_bacak"><material>Gazebo/Yellow</material></gazebo>
+
+        <joint name="base_to_${prefix}_legmil" type="continuous">
+            <parent link="base_link"/>
+            <child link="${prefix}_legmil"/>
+            <origin xyz="${0.39 * reflect_y} 0 0.57" rpy="0 0 0"/>
+            <axis xyz="1 0 0"/> 
+            <dynamics damping="0.5" friction="0.5"/> 
+        </joint>
+
+        <joint name="${prefix}_legmil_to_prf" type="fixed">
+            <parent link="${prefix}_legmil"/>
+            <child link="${prefix}_prfleg"/>
+            <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+        </joint>
+
+        <joint name="${prefix}_prf_to_bacak" type="fixed">
+            <parent link="${prefix}_prfleg"/>
+            <child link="${prefix}_bacak"/>
+            <origin xyz="${0.03 * reflect_y} 0 -0.03" rpy="0 0 0"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:rover_leg prefix="sag" reflect_y="1" />
+    <xacro:wheel_assembly prefix="sag" suffix="on" parent_link="sag_bacak" reflect_x="1" reflect_y="1" />
+    <xacro:wheel_assembly prefix="sag" suffix="arka" parent_link="sag_bacak" reflect_x="-1" reflect_y="1" />
+
+    <xacro:rover_leg prefix="sol" reflect_y="-1" />
+    <xacro:wheel_assembly prefix="sol" suffix="on" parent_link="sol_bacak" reflect_x="1" reflect_y="-1" />
+    <xacro:wheel_assembly prefix="sol" suffix="arka" parent_link="sol_bacak" reflect_x="-1" reflect_y="-1" />
+
+
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+
+        <joint name="sol_on_drive_to_wheel">
+            <command_interface name="velocity"/>
+            <state_interface name="velocity"/>
+         </joint>
+        <joint name="sag_on_drive_to_wheel">
+            <command_interface name="velocity"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="sol_arka_drive_to_wheel">
+            <command_interface name="velocity"/>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="sag_arka_drive_to_wheel">
+            <command_interface name="velocity"/>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="sol_on_gearbox_to_mil">
+            <command_interface name="position"/>
+            <state_interface name="position"/>
+        </joint>
+        <joint name="sag_on_gearbox_to_mil">
+            <command_interface name="position"/>
+            <state_interface name="position"/>
+        </joint>
+        <joint name="sol_arka_gearbox_to_mil">
+            <command_interface name="position"/>
+            <state_interface name="position"/>
+        </joint>
+        <joint name="sag_arka_gearbox_to_mil">
+            <command_interface name="position"/>
+            <state_interface name="position"/>
+        </joint>
+    </ros2_control>
+
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find robot_2_description)/config/control.yaml</parameters> 
+        </plugin>
+    </gazebo>
+
+</robot>

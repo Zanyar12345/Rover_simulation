@@ -1,0 +1,35 @@
+<launch>
+
+  <let name="urdf_path"
+       value="$(find-pkg-share robot_2_description)/urdf/robot_2.urdf.xacro"/>
+
+  <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
+    <param name="robot_description"
+           value="$(command 'xacro $(var urdf_path)')"/>
+  </node>
+
+  <executable
+    cmd="gazebo --verbose -s libgazebo_ros_factory.so"
+    output="screen"/>
+
+  <node pkg="gazebo_ros" exec="spawn_entity.py"
+        args="-topic robot_description -entity robot_2"
+        output="screen"/>
+
+  <node pkg="controller_manager" exec="spawner"
+        args="joint_state_broadcaster"
+        output="screen"/>
+
+  <node pkg="controller_manager" exec="spawner"
+        args="wheel_velocity_controller"
+        output="screen"/>
+
+  <node pkg="controller_manager" exec="spawner"
+        args="steer_position_controller"
+        output="screen"/>
+
+  <node pkg="joy" exec="joy_node"/>
+  <node pkg="robot_2_description" exec="input_processor.py"/>
+  <node pkg="robot_2_description" exec="publisher.py"/>
+     
+</launch>
