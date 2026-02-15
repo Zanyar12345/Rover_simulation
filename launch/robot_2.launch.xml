@@ -8,13 +8,16 @@
            value="$(command 'xacro $(var urdf_path)')"/>
   </node>
 
-  <executable
-    cmd="gazebo --verbose -s libgazebo_ros_factory.so"
-    output="screen"/>
+<set_env name="GAZEBO_MODEL_PATH"
+         value="/home/zanyar/ros2/src/robot_2_description/models"/>
 
-  <node pkg="gazebo_ros" exec="spawn_entity.py"
-        args="-topic robot_description -entity robot_2"
-        output="screen"/>
+<executable
+  cmd="gazebo --verbose -s libgazebo_ros_init.so -s libgazebo_ros_factory.so /home/zanyar/ros2/src/robot_2_description/worlds/mars.world"
+  output="screen"/>
+
+<node pkg="gazebo_ros" exec="spawn_entity.py"
+      args="-topic robot_description -entity robot_2 -x 0 -y 0 -z 1"
+      output="screen"/>
 
   <node pkg="controller_manager" exec="spawner"
         args="joint_state_broadcaster"
