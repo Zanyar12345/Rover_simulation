@@ -37,22 +37,22 @@ class Publisher(Node):
         self.create_timer(0.02, self.publish_commands)   
 
     def fl_speed_cb(self, msg): 
-        self.vel[0] = float(msg.data)*(self.slowness)
-    def fr_speed_cb(self, msg): 
-        self.vel[1] = float(msg.data)*(self.slowness)
-    def rr_speed_cb(self, msg): 
         self.vel[2] = float(msg.data)*(self.slowness)
-    def rl_speed_cb(self, msg): 
+    def fr_speed_cb(self, msg): 
         self.vel[3] = float(msg.data)*(self.slowness)
+    def rr_speed_cb(self, msg): 
+        self.vel[1] = float(msg.data)*(self.slowness)
+    def rl_speed_cb(self, msg): 
+        self.vel[0] = float(msg.data)*(self.slowness)
 
     def fl_angle_cb(self, msg): 
-        self.ang[0] = (180-msg.data)*1.57/90
-    def fr_angle_cb(self, msg): 
-        self.ang[1] = (180-msg.data)*1.57/90
-    def rr_angle_cb(self, msg): 
         self.ang[2] = (180-msg.data)*1.57/90
-    def rl_angle_cb(self, msg): 
+    def fr_angle_cb(self, msg): 
         self.ang[3] = (180-msg.data)*1.57/90
+    def rr_angle_cb(self, msg): 
+        self.ang[0] = (180-msg.data)*1.57/90
+    def rl_angle_cb(self, msg): 
+        self.ang[1] = (180-msg.data)*1.57/90
 
     def publish_commands(self):
 
