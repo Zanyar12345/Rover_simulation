@@ -3,6 +3,8 @@
   <world name="default">
     <scene>
         <background>202 150 66</background>
+        <shadows>false</shadows>
+
     </scene>
 
     <physics type="ode">
@@ -21,15 +23,12 @@
       <cast_shadows>false</cast_shadows>
     </light>
 
-    <include>
-      <uri>model://sun</uri>
-    </include>
 
-    <include>
+    <!-- <include>
       <uri>model://curiosity_path</uri>
       <name>curiosity_path</name>
       <pose>-136.5 127 14.21 0 0 0</pose>
-    </include>
+    </include> -->
 
     <include>
       <uri>model://mars_terrain</uri>

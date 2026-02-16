@@ -1,0 +1,20 @@
+{
+    "ROS2.distro": "humble",
+    "python.autoComplete.extraPaths": [
+        "/home/zanyar/ros2/install/proje/lib/python3.10/site-packages",
+        "/home/zanyar/ros2/install/gorev_paket/lib/python3.10/site-packages",
+        "/home/zanyar/ros2/install/dort_teker_alternatif/lib/python3.10/site-packages",
+        "/home/zanyar/ros2_ws/install/rqt_gauges/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/zanyar/ros2/install/proje/lib/python3.10/site-packages",
+        "/home/zanyar/ros2/install/gorev_paket/lib/python3.10/site-packages",
+        "/home/zanyar/ros2/install/dort_teker_alternatif/lib/python3.10/site-packages",
+        "/home/zanyar/ros2_ws/install/rqt_gauges/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true
+}

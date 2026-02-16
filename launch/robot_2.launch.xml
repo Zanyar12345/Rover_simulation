@@ -12,11 +12,11 @@
          value="/home/zanyar/ros2/src/robot_2_description/models"/>
 
 <executable
-  cmd="gazebo --verbose -s libgazebo_ros_init.so -s libgazebo_ros_factory.so /home/zanyar/ros2/src/robot_2_description/worlds/mars.world"
+  cmd="gazebo --verbose -s libgazebo_ros_init.so -s libgazebo_ros_factory.so /home/zanyar/ros2/src/robot_2_description/worlds/moon.world"
   output="screen"/>
 
 <node pkg="gazebo_ros" exec="spawn_entity.py"
-      args="-topic robot_description -entity robot_2 -x 0 -y 0 -z 1"
+      args="-topic robot_description -entity robot_2 -x 0 -y 0 -z 5"
       output="screen"/>
 
   <node pkg="controller_manager" exec="spawner"
