@@ -20,7 +20,7 @@ class Publisher(Node):
             '/steer_position_controller/commands',
             10
         )
-        self.slowness = 1/2
+        self.slowness = -1/2
         self.vel = [0.0, 0.0, 0.0, 0.0]
         self.ang = [0.0, 0.0, 0.0, 0.0]
 
