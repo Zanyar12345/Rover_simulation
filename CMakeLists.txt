@@ -12,6 +12,9 @@ install(
   PROGRAMS
     robot_2_description/publisher.py
     robot_2_description/input_processor.py
+    robot_2_description/input_processor1.py
+    robot_2_description/mode.py
+    robot_2_description/odom_tf.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
