@@ -63,7 +63,7 @@ class HotasProcessor(Node):
         self.joy_subscription = self.create_subscription(Joy, 'joy', self.joy_callrear, 10)
         self.cmd_vel_subscription = self.create_subscription(
             Twist, "/cmd_vel", self.cmd_vel_callrear, 10)
-        self.create_subscription(String, '/control_mode', self.mode_callback, 10)
+        # self.create_subscription(String, '/control_mode', self.mode_callback, 10)
         # self.path_sub = self.create_subscription(
         #     Path, '/received_global_plan', self.path_callback, 10)
         # self.target_yaw = None
@@ -90,13 +90,13 @@ class HotasProcessor(Node):
         self.get_logger().info(f'Motor Control Node initialized at {self.frequency} Hz')
         self.get_logger().info(f'Current mode: {self.mode_names[self.current_mode]}')
 
-    def mode_callback(self, msg):
-        if msg.data == "NAV":
-            self.get_logger().info("NAV")
-            self.control_mode = "NAV"
-        elif msg.data == "JOY":
-            self.control_mode = "Joy"
-            self.get_logger().info("Joy")
+    # def mode_callback(self, msg):
+    #     if msg.data == "NAV":
+    #         self.get_logger().info("NAV")
+    #         self.control_mode = "NAV"
+    #     elif msg.data == "JOY":
+    #         self.control_mode = "Joy"
+    #         self.get_logger().info("Joy")
 
     def process_normal_mode(self, msg):
         if self.control_mode == "Joy":
