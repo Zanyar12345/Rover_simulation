@@ -85,6 +85,7 @@ class HotasProcessor(Node):
         self.joy_msg = Joy()
         self.cmd_vel_msg = Twist()
         self.control_mode = "Joy"
+        self.last_cmd_time = None
   
         self.get_logger().info(f'Motor Control Node initialized at {self.frequency} Hz')
         self.get_logger().info(f'Current mode: {self.mode_names[self.current_mode]}')
@@ -296,6 +297,12 @@ class HotasProcessor(Node):
         self.joy_msg = msg
         self.check_mode_changes(msg)
         
+        if self.last_cmd_time is not None:
+            time_diff = (self.get_clock().now() - self.last_cmd_time).nanoseconds / 1e9
+            if time_diff < 0.5:
+                return
+
+        self.control_mode = "Joy"
         if self.current_mode == 0:
             self.process_normal_mode(self.joy_msg)
         elif self.current_mode == 1:
@@ -308,6 +315,7 @@ class HotasProcessor(Node):
             publisher.publish(self.msgs[name])
 
     def cmd_vel_callrear(self, msg):
+        self.last_cmd_time = self.get_clock().now()
         self.control_mode = "NAV"
         self.cmd_vel_msg = msg
         self.process_normal_mode(self.cmd_vel_msg)
