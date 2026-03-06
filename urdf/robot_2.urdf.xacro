@@ -73,7 +73,7 @@
     <joint name="base_to_diff_bar" type="fixed">
         <parent link="base_link"/>
         <child link="diff_bar"/>
-        <origin xyz="0 0 0.40" rpy="0 0 0"/> 
+        <origin xyz="0 0 0.40" rpy="0 0 ${pi/2}"/> 
         <!-- <axis xyz="0 1 0"/> 
         <limit lower="-0.4" upper="0.4" effort="100" velocity="1.0"/>  -->
     </joint>
