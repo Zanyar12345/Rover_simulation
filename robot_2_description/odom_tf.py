@@ -21,7 +21,7 @@ class OdomTfBridge(Node):
         
         t.transform.translation.x = msg.pose.pose.position.x
         t.transform.translation.y = msg.pose.pose.position.y
-        t.transform.translation.z = msg.pose.pose.position.z
+        t.transform.translation.z = 0.0
         t.transform.rotation = msg.pose.pose.orientation
         
         self.tf_broadcaster.sendTransform(t)
