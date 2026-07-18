@@ -1,0 +1,31 @@
+# ==============================================================================
+# ARC'26 Otonom Görev — GPS Koordinatları
+# ==============================================================================
+# Bu dosyadaki koordinatlar VARSAYILAN (placeholder) değerlerdir.
+# Yarışma günü hakemlerden aldığınız gerçek koordinatlarla güncelleyin.
+# Not: Bazı koordinatlar (antenna area, crater, lava tube, airlock return)
+#      RSCP sunucusu tarafından da gönderilebilir. Sunucu komutu gelirse
+#      bu dosyadaki değerler yerine sunucunun gönderdiği koordinatlar kullanılır.
+# ==============================================================================
+
+autonomous_mission_test:
+  ros__parameters:
+    # Airlock çıkış noktası (Rover başlangıçta burada)
+    gps_airlock_exit_lat: 1.0
+    gps_airlock_exit_lon: 0.0
+
+    # Anten alanı merkezi (Stage 1 — SearchArea ile sunucudan da gelebilir)
+    gps_antenna_area_lat: 3.0
+    gps_antenna_area_lon: 0.0
+
+    # Shackleton Krateri merkezi (Stage 2 — SearchArea ile sunucudan da gelebilir)
+    gps_shackleton_crater_lat: 2.0
+    gps_shackleton_crater_lon: 2.0
+
+    # Lav Tüpü girişi (Stage 3 — NavigateToGPS ile sunucudan da gelebilir)
+    gps_lava_tube_entrance_lat: 4.0
+    gps_lava_tube_entrance_lon: 0.0
+
+    # Airlock dönüş noktası (Stage 4 — NavigateToGPS ile sunucudan da gelebilir)
+    gps_airlock_return_lat: 0.0
+    gps_airlock_return_lon: 0.0

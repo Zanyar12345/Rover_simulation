@@ -1,0 +1,131 @@
+<launch>
+
+  <let name="pkg_simulation" value="$(find-pkg-share robot_2_gps_description)"/> 
+  
+  <let name="urdf_path" value="$(var pkg_simulation)/urdf/robot_2_real.urdf.xacro"/>
+
+<!-- 
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="base_link_to_zed" 
+      args="0 0.49 0.6 1.57 0 0 base_link zed2_camera_center"/> -->
+
+<node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
+  <param name="use_sim_time" value="false"/>
+  <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"/>
+</node>
+
+  <arg name="params_file" default="$(var pkg_simulation)/config/nav2_params.yaml"/>
+  <arg name="use_sim_time" default="false"/>
+
+  <!-- ADIM 4'un baslangic testleri sirasinda Nav2'nin kendi kendine SpinRecovery yapip robotu cildirtmamasi icin gecici(kalibrasyon bitene kadar) kapatildi -->
+
+  <include file="$(find-pkg-share nav2_bringup)/launch/navigation_launch.py">
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="params_file" value="$(var params_file)"/>
+  </include>
+
+
+<group>
+  <include file="$(find-pkg-share rtabmap_launch)/launch/rtabmap.launch.py">
+      <arg name="use_sim_time" value="false"/>
+      <arg name="frame_id" value="base_footprint"/>
+      
+      <arg name="rgb_topic" value="/zed/zed_node/rgb/color/rect/image"/>
+      <arg name="depth_topic" value="/zed/zed_node/depth/depth_registered"/>
+      <arg name="camera_info_topic" value="/zed/zed_node/rgb/color/rect/camera_info"/>
+      <arg name="approx_sync" value="true"/>
+      
+      <arg name="visual_odometry" value="false"/> 
+      <arg name="publish_tf_odom" value="false"/> 
+      <arg name="odom_frame_id" value="odom"/>
+      <arg name="publish_tf_map" value="true"/>
+      <arg name="args" value="-d"/>
+      <arg name="database_path" value=""/>
+      <arg name="rgbd_sync" value="true"/>
+      <arg name="rtabmap_viz" value="true"/>
+      <arg name="approx_sync_max_interval" value="0.02"/>
+      <arg name="wait_for_transform" value="1.0"/>
+  </include>
+</group>
+
+<!-- 1. ZED 2 Camera Wrapper (Görsel Odom ve IMU sağlar. TF yayınlamaz, EKF yayınlar) -->
+  <include file="$(find-pkg-share zed_wrapper)/launch/zed_camera.launch.py">
+      <arg name="camera_model" value="zed2"/>
+      <arg name="publish_tf" value="false"/>
+      <arg name="config_path" value="$(var pkg_simulation)/config/zed_override.yaml"/>
+      <arg name="container_name" value=""/>
+  </include>
+
+<!-- 2. Real GPS Driver (e.g. U-blox or NMEA) 
+   TODO [ADIM 3] (USB PORT KURALLARI - UDEV KODLARI): 
+       1 Robotun Ubuntu terminalini aç ve USB cihazlarının ID'lerini (idVendor/idProduct) öğrenmek için şunu yaz: 
+          lsusb
+       2 Yeni bir kural dosyası oluşturmak için terminale şu kodu yaz: 
+          sudo nano /etc/udev/rules.d/99-usb-sensors.rules
+       3 Açılan dosyaya GPS'in için şu kod satırını yapıştır (rakamları lsusb'den bakıp kendi cihazına göre gir):
+          SUBSYSTEM=="tty", ATTRS{idVendor}=="1546", ATTRS{idProduct}=="01a7", SYMLINK+="ttyGPS"
+       4 Kuralları sisteme kaydetmek için şu komutu çalıştır:
+          sudo udevadm control /-/-reload-rules /&/& sudo udevadm trigger 
+       5 En son gelip aşağıdaki "port" kodunda "/dev/ttyUSB0" kısmını "/dev/ttyGPS" yap!
+  -->
+<!-- GPS node'u ayri bir alet/ROS 2 nodu olarak baglanacaktir -->
+
+
+  <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ŞİMDİLİK İPTAL (Donanım C++ veya micro-ROS yazılana kadar terminalin çökmemesi test amaçlı kapatıldı)
+  <node pkg="controller_manager" exec="ros2_control_node" output="screen">
+    <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"/>
+    <param from="$(var pkg_simulation)/config/control.yaml"/>
+  </node>
+
+  <node pkg="controller_manager" exec="spawner" args="joint_state_broadcaster" output="screen"/>
+  <node pkg="controller_manager" exec="spawner" args="wheel_velocity_controller" output="screen"/>
+  <node pkg="controller_manager" exec="spawner" args="steer_position_controller" output="screen"/>
+  -->
+
+  <node pkg="joy" exec="joy_node"/>
+  <node pkg="robot_2_gps_description" exec="input_processor1.py"/>
+  
+  <!-- Donanım Haberleşme (Pico Bridge) -->
+  <include file="$(find-pkg-share pico_bridge_pkg)/launch/locomotion.launch.py"/>
+
+  <!-- 3. Robot Localization (Kalman Filter) -> SADECE ZED ODOMETRİSİ (POSE) KULLANIMI -->
+  <let name="ekf_config_path" value="$(var pkg_simulation)/config/ekf_real.yaml"/>
+
+  <node pkg="robot_localization" exec="ekf_node" name="ekf_filter_node">
+    <param from="$(var ekf_config_path)" />
+  </node>
+  
+  <node pkg="robot_2_gps_description" exec="joint_state_aggregator.py" name="joint_state_aggregator" output="screen"/>
+  <node pkg="robot_2_gps_description" exec="odom_calculator.py" name="odom_calculator" output="screen"/>
+
+
+
+
+  <!-- GPS ENTEGRASYONU AKTIF EDILDI (ADIM 3) -->
+  <node pkg="robot_2_gps_description" exec="gps_logger.py" name="gps_publisher" output="screen"/>
+
+  <node pkg="robot_localization" exec="ekf_node" name="ekf_filter_node_map">
+    <param from="$(var ekf_config_path)" />
+    <remap from="odometry/filtered" to="odometry/filtered_map" />
+  </node>
+
+  <node pkg="robot_localization" exec="navsat_transform_node" name="navsat_transform">
+    <param from="$(var ekf_config_path)" />
+    <remap from="imu/data" to="/zed/zed_node/imu/data" />
+    <remap from="gps/fix" to="/gps/fix" />
+    <remap from="odometry/filtered" to="odometry/filtered_map" />
+  </node>
+
+
+
+
+  <let name="config_rviz"
+     value="$(find-pkg-share robot_2_gps_description)/config/rviz_config.rviz"/>
+
+<node pkg="rviz2"
+      exec="rviz2"
+      args="-d $(var config_rviz)"
+      output="screen">
+  <param name="use_sim_time" value="false"/>
+</node>
+
+</launch>

@@ -1,0 +1,18 @@
+<launch>
+    <!-- Include Nav2 and existing Real setup -->
+    <include file="$(find-pkg-share robot_2_gps_description)/launch/robot_2_real.launch.xml" />
+    
+    <!-- Vision Perception Node -->
+    <node pkg="robot_2_gps_description" exec="vision_perception.py" name="vision_perception_node" output="screen" />
+    
+    <!-- RSCP Client Node -->
+    <node pkg="robot_2_gps_description" exec="rscp_client.py" name="rscp_client" output="screen" />
+    
+    <!-- Autonomous Mission Controller Node (GPS koordinatları YAML'dan yüklenir) -->
+    <node pkg="robot_2_gps_description" exec="autonomous_mission_controller.py" name="autonomous_mission_controller" output="screen">
+        <param from="$(find-pkg-share robot_2_gps_description)/config/gps_waypoints.yaml" />
+    </node>
+
+    <!-- Peak Height Calculator Node -->
+    <node pkg="robot_2_gps_description" exec="height.py" name="peak_height_calculator" output="screen" />
+</launch>

@@ -1,0 +1,8 @@
+/**:
+    ros__parameters:
+        pos_tracking:
+            publish_tf: false
+            publish_map_tf: false
+            base_frame: 'base_footprint'
+            map_frame: 'map'
+            odometry_frame: 'odom'

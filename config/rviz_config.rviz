@@ -3,7 +3,9 @@ Panels:
     Help Height: 78
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /Camera1
+        - /PointCloud21
       Splitter Ratio: 0.5
     Tree Height: 282
   - Class: rviz_common/Selection
@@ -54,40 +56,6 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /received_global_plan
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 0.19401118159294128
-        Min Value: -0.24653026461601257
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz_default_plugins/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: AxisColor
-      Decay Time: 0
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.10000000149011612
-      Style: Flat Squares
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /cloud_map
-      Use Fixed Frame: true
-      Use rainbow: true
       Value: true
     - Alpha: 1
       Class: rviz_default_plugins/RobotModel
@@ -271,15 +239,15 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        zed2_camera_center:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         zed2_camera_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        zed_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Mass Properties:
         Inertia: false
         Mass: false
@@ -289,7 +257,7 @@ Visualization Manager:
       Value: true
       Visual Enabled: true
     - Class: rviz_default_plugins/Camera
-      Enabled: true
+      Enabled: false
       Far Plane Distance: 100
       Image Rendering: background and overlay
       Name: Camera
@@ -299,7 +267,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /zed2/zed2_sensor/image_raw
+        Value: /zed/zed_node/rgb/color/rect/image
       Value: true
       Visibility:
         Path: true
@@ -328,11 +296,45 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /goal_pose
       Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 2.5861923694610596
+        Min Value: 0.540402889251709
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz_default_plugins/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 1000
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /zed/zed_node/point_cloud/cloud_registered
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Fixed Frame: map
-    Frame Rate: 30
+    Frame Rate: 10
   Name: root
   Tools:
     - Class: rviz_default_plugins/Interact
@@ -374,25 +376,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 6.870944023132324
+      Distance: 37.80388259887695
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.40630143880844116
-        Y: 1.2604081630706787
-        Z: 4.861715793609619
+        X: 0.600142776966095
+        Y: -0.018359173089265823
+        Z: 2.6542062759399414
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6347974538803101
+      Pitch: 0.44479799270629883
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.6422643661499023
+      Yaw: 3.687239170074463
     Saved: ~
 Window Geometry:
   Camera:
