@@ -33,6 +33,7 @@ install(PROGRAMS
   robot_2_gps_description/odom_calculator.py
   robot_2_gps_description/rscp_client.py
   robot_2_gps_description/vision_perception.py
+  robot_2_gps_description/rscp_mock_server.py
   test_mission.py
   test_stage_1.py
   DESTINATION lib/${PROJECT_NAME}

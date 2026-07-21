@@ -1,0 +1,4099 @@
+Anatolian Rover Challenge
+2026 Manual
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+2
+
+Version Information
+This file is the ARC’26 Manual v.3 and is the latest released version of ARC’26 manuals. ​
+​
+
+For the planned updates, check Change in Rules and Delivery Dates.
+Written by the ARC Committee. Digitally distributed.
+
+Changelog
+The ARC’26 Manual v.1 release date: 22.12.2025.
+The ARC’26 Manual v.2 release date: 25.01.2026.
+The ARC’26 Manual v.3 release date: 16.02.2026.
+
+Information Channels and Contacts
+The ARC website is the main source of information on the event.
+Questions regarding the rules can be directed through the ARC website.
+The ARC Website: www.anatolianrover.space ​
+​
+
+The ARC Mail Address: info@anatolianroverchallenge.com​
+
+​
+Contact persons:
+1.​ Nurdeniz Altuntaş / Işık Su Yazıcı​
+
+ARC Co-General Manager​
+2.​ Mücahit Eyüp​
+
+ARC Rules Manager
+3.​ Tuğba Can
+ARC Rules Assistant Manager
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+3
+
+Table of Contents
+1. Introduction​
+
+5
+
+2. General Information​
+
+7
+
+2.1. Descriptions​
+
+7
+
+2.2. Participation Conditions​
+
+7
+
+2.3. Calendar​
+
+8
+
+2.3.1. Milestones​
+
+8
+
+2.3.2. Details​
+
+9
+
+2.4. Emergency Handling​
+
+9
+
+2.5. Challenge Fee​
+
+9
+
+2.6. Questions and Answers​
+
+9
+
+2.7. Change in Rules and Delivery Dates​
+
+10
+
+2.8. Finalists​
+
+10
+
+2.9 World Rover League​
+
+10
+
+3. General Rules​
+
+11
+
+3.1. Rover Design Requirements​
+
+12
+
+3.1.1. Weight Limitation​
+
+12
+
+3.1.2. Size Limitation​
+
+12
+
+3.1.3. Cost Limitation​
+
+12
+
+3.1.4. Design Advice​
+
+12
+
+3.1.5. Rover Safety​
+
+13
+
+3.1.5.1. Activity Light​
+
+13
+
+3.1.5.2. Emergency​
+
+13
+
+3.1.5.3. Use of Flammables-Explosives​
+
+13
+
+3.1.6. Communication Equipment Usage​
+
+13
+
+3.1.7 Rover Technical Check-in​
+
+14
+
+3.2. Penalty Conditions​
+
+14
+
+3.3. Objection Process​
+
+15
+
+3.4. Ethics​
+
+15
+
+4. Definitions​
+
+16
+
+4.1. Challenge Area​
+
+16
+
+4.2. Mission Fields​
+
+16
+
+4.3. Rover​
+
+16
+
+4.4. Bases​
+
+16
+
+4.5. Base Crew​
+
+17
+
+4.6. Field Crew​
+
+17
+
+4.7. Judges​
+
+17
+
+4.8. Intervention​
+
+17
+
+4.9. Field Onboarding​
+
+18
+
+4.10. Skipping​
+
+18
+
+4.11. Field Dimensions​
+
+18
+
+4.12. Coordinate System​
+
+18
+
+4.13. Border Violation​
+
+19
+
+4.14. Criteria for “Reaching Target”​
+
+19
+
+4.15. Mission Module​
+
+19
+
+5. Documentation​
+
+19
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+4
+
+5.1. Application Form​
+
+19
+
+5.2. Reports​
+
+20
+
+5.2.1. Design Report​
+
+20
+
+5.2.2. Video Presentation​
+
+22
+
+5.2.3. Landing Site Proposal​
+
+24
+
+5.2.4 Science Report​
+
+24
+
+5.2.5. Cost Report​
+
+25
+
+5.2.6. Collaboration Presentation​
+
+25
+
+6. Background of the Missions​
+
+27
+
+6.1. Mars Story​
+
+27
+
+6.2. Moon Story​
+
+27
+
+7. Missions​
+
+28
+
+7.1. The Final Stage Missions​
+
+28
+
+7.1.1. Science Mission:​
+
+28
+
+7.1.1.1. Steps​
+
+28
+
+Part 1 | Landing & Exploration (30 min)​
+
+28
+
+Part 2 | Laboratory (10 min)​
+
+29
+
+Part 3 | Presentation (10 min)​
+
+30
+
+7.1.1.2. Scores​
+
+31
+
+7.1.1.3. Details​
+
+32
+
+Laboratory Rules​
+7.1.2. Night Mission​
+
+32
+33
+
+7.1.2.1. Steps​
+
+33
+
+7.1.2.2. Scores​
+
+34
+
+7.1.2.3. Details​
+
+35
+
+7.1.3. Autonomous Mission​
+
+36
+
+7.1.3.1. Steps​
+
+36
+
+7.1.3.2. Scores​
+
+38
+
+7.1.3.3. Details​
+
+38
+
+7.1.3.3.1 Rover Satellite Communications - Client Module (RSC-CM)​
+7.1.3.3.2 Message Format: Rover Satellite Communications Protocol (RSCP)​
+7.1.4. Collaboration Mission​
+
+39
+39
+40
+
+7.1.4.1. Steps​
+
+40
+
+7.1.4.2. Scores​
+
+42
+
+7.1.4.3. Details​
+
+43
+
+7.2. Off-field Missions​
+
+44
+
+7.2.1. Challenge to Shine​
+
+44
+
+7.2.2. Fun Challenges​
+
+44
+
+7.2.2.1. Rover's Mystery Canvas​
+
+44
+
+7.2.2.2. Victoria's Rover​
+
+44
+
+7.2.2.3. Disco Rover​
+
+44
+
+7.2.2.4. Rover Jenga​
+
+44
+
+7.2.2.5. Tug of Challenge​
+
+45
+
+8. Technical Drawings​
+
+45
+
+8.1 Emergency Kit - Night Mission​
+
+45
+
+8.2 Toolbox - Night Mission​
+
+46
+
+8.3 Repair Tool - Night Mission​
+
+46
+
+8.4 Oxygen Tank - Night Mission​
+
+47
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+5
+
+8.5 Antenna - Autonomous Mission​
+
+47
+
+8.6 Recorder - Collaboration Mission​
+
+48
+
+8.7 Sensors - Collaboration Mission​
+
+48
+
+8.8 Panel - Collaboration Mission​
+
+49
+
+8.9 Pipe - Collaboration Mission​
+
+49
+
+8.10 Solar Panel- Collaboration Mission​
+
+49
+
+8.11 Mirror Mechanism​
+
+50
+
+8.12 Yagi Antenna - Collaboration Mission​
+
+50
+
+8.13 Dish Antenna - Collaboration Mission​
+
+52
+
+8.14 Marker​
+
+53
+
+8.15 RSCP Module​
+
+53
+
+9. Evaluation​
+
+54
+
+1. Introduction
+Anatolian Rover Challenge is an annual international rover challenge. In the scope of the
+challenge, the teams of students that are affiliated with academic institutions try to achieve the
+determined missions by their own "planetary exploration robots" called rovers. Teams should
+design, manufacture, and equip their rovers with the necessary abilities to complete all missions.
+The ARC event aims to create an opportunity for teams to show their abilities in solving difficult
+engineering and scientific problems.
+The student teams that apply for the challenge go through a design report and video
+presentation process. After the evaluation, teams that qualify for the finals are announced and
+invited to participate in the field evaluation that takes place in Türkiye.
+The finals are held in the carefully designed open field that is 40 meters in diameter and
+designed to resemble the surface of Mars and the Moon. During the finals, teams perform four
+mission scenarios. Scores are determined by judges based on score tables. ARC begins with a
+meetup day, continues with three days of competition, and ends with an award ceremony.
+ARC awards are unique!
+The winning teams at ARC'22 were rewarded with visits to Izmir Space Camp, Türkiye's best
+space sciences and technologies training center, and GUHEM, the space and aviation center in
+Bursa.
+Meanwhile, ARC’23 offered the winner a launch to space! The team's photo now decorates
+the walls of the International Space Station as part of a commemorative postcard. On January 17th,
+2024, Türkiye’s first astronaut, Alper Gezeravcı, carried the postcard to the ISS during his Ax-3
+mission. For more details about this mission and the competition, visit the ARC website.
+In the ARC’24, the winning team was awarded a series of test runs at the moon regolith
+simulator of SpacePort Rostock, Germany. It provided an opportunity for the team to test in real
+conditions of harsh Moon dust, challenging their rover engineering to the limits!
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+6
+
+The ARC'25 awards were a model of Mars carved from wood. The ARC'25 and ARC JR'25
+awards were all designed to come together to form a complete Mars model. The 1st, 2nd, and 3rd
+place team awards, category awards, and ARC JR awards were presented separately to the winning
+teams.
+
+ARC’23 Award: Postcard of Winner Team
+launched to International Space Station.
+
+ARC’24 Award: Test opportunity at Moon
+Surface Simulator at Spaceport Rostock.
+
+ARC’25 Award: The carvings, when put
+together, reveal an exact topography of
+Mars.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+7
+
+2. General Information
+The date for the Anatolian Rover Challenge (ARC) 2026 will be announced soon at the
+website. The challenge is organized by the ARC Organizing Committee (or the ARC Committee),
+which is a subcommittee of the Space Exploration Society (UKET) that was established to
+contribute to space studies in Türkiye.
+
+2.1. Descriptions
+Supreme Board of Judges: The responsible committee for the examination and scoring of
+the reports and missions throughout the challenge, which is established on transparent
+principles, with international participation.
+Organizing Committee/Organizer/The ARC Committee: The ARC Organizing Committee
+is a subcommittee of the Space Exploration Society (UKET). It is the committee that conducts and
+manages all the organizational processes of the Anatolian Rover Challenge.
+Team: A group of students affiliated with an academic institution who applied for the
+challenge. Each team must consist of at least two members and an academic advisor.
+Team Leader: The responsible person for matters related to the team and the rover.
+Team Member: A team member must be over 18 and a university student of all levels.
+Members can take part in only one team.
+Advisor: The person with an academic title that guides the team.
+Prohibited Substance: Substances that affect self-control, team members, and the
+rovers, such as alcohol, drugs, all kinds of weapons, etc.
+Finals: The on-site challenges (explained in the Missions section in detail) that are held in
+Türkiye. Only teams that are qualified and announced as finalists can participate in the finals.
+Teams that are not eligible for the finals or curious are encouraged to experience the challenge as
+visitors.
+
+2.2. Participation Conditions
+1.​ The application for the challenge is required to be submitted electronically using the
+online application system at the
+Apply ARC | Anatolian Rover Challenge address.
+2.​ It is obligatory to participate in the challenge as a team; individual applications will not be
+accepted. There can be more than one team from a single institute.
+3.​ In case of any changes in the information given in the application, the teams must notify
+the Organizing Committee.
+4.​ Each team is required to have a Team Leader and an Advisor, whose descriptions are given
+in the General Information section.
+5.​ The deadlines for the reports and events are specified in the challenge calendar. The
+Organizing Committee reserves the right to change the calendar.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+8
+
+6.​ Only the team members must be the authors of all the required documents that will be
+submitted.
+7.​ An academic advisor is required for all teams. The teams may have more than one
+academic advisor.
+
+2.3. Calendar
+2.3.1. Milestones
+An up-to-date calendar of the challenge and important dates is shown in the table below.
+The versions of the ARC Manual differ in terms of a few additional details. The missions will remain
+intact.
+
+Date
+
+Event
+
+22.12.2025
+
+Release of the ARC’26 Manual v.1
+
+25.01.2026
+
+Release of the ARC’26 Manual v.2
+
+16.02.2026
+
+Release of the ARC’26 Manual v.3
+
+16.02.2026
+
+Beginning of the Application Submission
+
+16.02.2026
+
+Beginning of the Report Submissions
+
+29.03.2026
+
+Early Application Due Date
+
+30.03.2026
+
+Beginning of the Late Application
+
+30.04.2026
+
+Report Submissions Due Date
+
+30.04.2026
+
+Late Application Due Date
+
+20.05.2026
+
+Announcement of the Finalists
+Last release of the communication protocol and the
+
+01.06.2026
+
+Science Report Due Date
+ARC’26 Orientation Day
+
+The date for the Anatolian Rover
+
+ARC’26 Day 1
+
+Challenge (ARC) 2026 will be
+
+ARC’26 Day 2
+
+announced soon at the website.
+
+ARC’26 Day 3
+ARC’26 Award Ceremony
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+9
+
+2.3.2. Details
+1.​ The deadline for applications is the same as the report submission due date. After this
+date, applications will be invalid and will not be considered. Teams that apply early may be
+given priority in the challenge day timetable.
+2.​ Registration for the finals will be performed on-site on the stated dates.
+3.​ On the closing day, the teams’ total scores will be calculated and announced, and awards
+will be given to the top teams.
+4.​ The Organizing Committee will announce the first version of the timetable, which includes
+the exact time slots for each mission one week before the event. The final version will be
+announced on the first day of the challenge.
+a.​ Each team is responsible for complying with this timetable. The Supreme Board of
+Judges reserves the right to reject any request for change in the challenge day
+timeline.
+
+2.4. Emergency Handling
+1.​ Necessary precautions and disaster plans have been made for the safety of the teams and
+the challenge area. Teams are expected to comply with the safety instructions from the
+ARC committee on site.
+2.​ In case of any injuries, the first aid will be made by paramedics, and if necessary, the
+injured person will be sent to the nearest hospital by ambulance. By applying, teams agree
+to the ARC committee's emergency procedures.
+
+2.5. Challenge Fee
+The early submission fee is 125 US Dollars, which should be paid by 29.03.2026. For the
+applicants who submit their fee after this date until the last day of submission of applications,
+which is 30.04.2026, the late submission fee is applied, which is 150 US Dollars.
+After the finalist teams are announced, teams that qualify for the finals must pay the
+challenge fee of 125 US Dollars. The payment details will be specified on the website.
+
+2.6. Questions and Answers
+A frequently updated Questions and Answers section is provided on the website. Teams
+are encouraged to ask questions through this section. The Q&A section overrides the ARC Manual.
+In addition, teams can also use the forum page (https://www.anatolianrover.space/forum) on the
+website to share with each other.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+10
+
+2.7. Change in Rules and Delivery Dates
+The Organizing Committee reserves the right to extend the deadline for document
+submissions and make necessary but unavoidable corrections to the challenge regulations at any
+time. Teams are obliged to check the challenge website for any changes. Major changes in rules
+are stated through the versions of the manual:
+●​ 25.01.2026 – the ARC Manual Version 2 (v.2.)
+●​ 16.02.2026 – the ARC Manual Version 3 (v.3.)
+
+2.8. Finalists
+The finalist teams will be selected by the judges based on the reports submitted by the
+teams. Final qualification scores are calculated by combining Design Report and Video
+Presentation Score. The finalists will be announced on the date specified in the schedule.
+
+2.9 World Rover League
+The World Rover League (WRL) is a global space robotics league for university students,
+including all competitions and teams in the world to date organized by SPROS and UKET, in which
+teams conceptualize, design, develop, and operate an astronaut-assistive next-generation
+planetary rover in simulated conditions.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+11
+
+3. General Rules
+The general rules are listed below:
+1.​ All the teams present in the on-site challenge will be given a certificate of
+participation.
+2.​ Rewards will be given according to the ranking of the scores collected from
+missions.
+3.​ The academic advisor’s job is to help students plan their projects, guide them
+academically, and support them mentally and emotionally. The awards to be given
+at the end of the challenge are only for the team members.
+4.​ The teams are obliged to show the expected care for their surroundings and other
+teams while competing.
+5.​ The “Waiver form” will be read and signed by each team member before the
+challenge during the registration.
+6.​ All team members are obliged to comply with the rules specified in this
+specification. If non-compliance is observed by the Organizing Committee, the
+relevant situation will be brought to the attention of the Supreme Board of Judges.
+As a result of the evaluation of the Supreme Board of Judges, individuals or teams
+may be disqualified from the challenge.
+7.​ During the entire event, no rover or any part of the system of the rover may damage
+or interfere with other teams' systems. Any reports of such violations will be
+investigated independently by the judges or organizers, and any violation of this
+rule may result in the team’s disqualification from the challenge. The Organizing
+Committee will not be held responsible for any of the damage caused to teams’
+systems.
+8.​ Teams and members are fully responsible for any damage, accident, situations,
+events, etc., caused by their hardware/software. All the precautions and rules
+declared by the Organizing Committee must be strictly followed. Any violation of
+safety regulations and standards will result in the disqualification of the team from
+the challenge.
+9.​ The use of any Prohibited Substance during the challenge is prohibited and
+constitutes a crime under the laws of Türkiye. Persons/teams who use and disturb
+the environment will be disqualified from the challenge.
+10.​ In case of a dispute regarding the challenge, the decision of the Supreme Board of
+Judges will be considered binding.
+11.​ In case of violation or cheating of the rules or specifications, judges will take
+action.
+12.​ Teams must comply with the directions and instructions of the Judges/Organizing
+Committee.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+12
+
+3.1. Rover Design Requirements
+To participate in the challenge, the general requirements specified in this file must be met.
+Teams have to indicate in their technical reports that they meet these requirements. In
+exceptional cases where teams are unable to meet the general requirements, they should contact
+the ARC Organizing Committee before submitting the technical report. In the case of any violation
+in requirements, the organizer has the right to remove the team from the challenge.
+
+3.1.1. Weight Limitation
+The weight limitation applies only to the rovers and does not include ground station
+equipment such as fixed antennas or computers. The rover will be weighed at the start of each
+mission.
+1.​ The rover’s weight with installed systems should not be more than 60 kilograms.
+2.​ Rovers over 60 kilograms will receive 5% penalty points for each kilogram weighing
+more than 60 kilograms.
+3.​ The total weight of the rover and installed mission-specific hardware
+configurations in all missions combined must not exceed 80 kilograms.
+
+3.1.2. Size Limitation
+The size limitation applies to the rovers including installed systems. The missions of the
+challenge are designed for a 1.5m x 1.5m x 1.5m vehicle, with at least 30 degrees of slopes, the
+large-scale rovers might not pass the expected passages in the missions, and might not complete
+the missions. If a rover cannot exit/enter the airlock, it can start from outside of the airlock for a
+30% penalty, see 9. Evaluation.
+
+3.1.3. Cost Limitation
+The total cost of the rover systems cannot exceed 25,000 US Dollars (see Cost Report).
+
+3.1.4. Design Advice
+Rover should be designed by considering the climate and environmental conditions of the
+region where the challenge is held. Any damage that may arise from environmental conditions is
+the responsibility of the relevant team. During the missions, rovers will work in the open field, and
+the challenge plan may be rescheduled in very windy, rainy, or foggy weather conditions. It is the
+teams’ responsibility to design or maintain their vehicles and equipment in such a way that they
+will not be affected by environmental conditions during or before the challenge.
+The challenge fields will be prepared by taking the surfaces of the planets on which the
+scenarios take place as examples. It is recommended that rovers be designed to perform the
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+13
+
+missions given in ground conditions such as gravel, either loose or hardened soil, and fine particle
+sand. There will be cratered or sloped sections in the field.
+Standard European type 220-230 V 50 Hz AC F type sockets will be provided to the teams
+at the bases. In addition, facilities such as tables, chairs, and power plugs will be provided at the
+base. Teams are encouraged to bring extension cables.
+
+3.1.5. Rover Safety
+3.1.5.1. Activity Light
+Rovers should be able to show their operational status to judges in proximity by turning a
+light green when remotely controlled, yellow when autonomously controlled, and red to indicate
+disarm. If the activity light is not turned on during the missions, the rover incurs a 10% penalty.
+Activity light must be visible enough from at least 5 meters afar.
+
+3.1.5.2. Emergency
+Rovers must not cause electrical, thermal, or mechanical harm to people who might want
+to stop it or to the people around them. The field crew of a relevant team is responsible for this.
+Teams are liable for damage caused by their rovers and activities while on and off the mission.
+1.​ A red emergency button with a diameter of at least 3 cm must be available on the
+rover, and this button should be kept in a visible place. Otherwise, the teams will be
+penalized. The emergency button must stop the transmission of power to all the
+rover's moving systems. The rovers without an emergency button are subjected to
+a 5% penalty.
+2.​ There is no limitation on the rover's cruising speed. Apart from the mission, the
+relevant teams must control their rovers, taking into account the safety of the
+living beings in the challenge area.
+
+3.1.5.3. Use of Flammables-Explosives
+When teams want to use pyrotechnic systems, they must contact the judge before the
+challenge and provide the associated MSDS documents.
+
+3.1.6. Communication Equipment Usage
+Teams can communicate between the rover and the base using a radio link. It is necessary
+for the success of the challenge missions that the communication systems of the teams cover the
+challenge area.
+In the challenge area, teams will set up their equipment in the base. They can place the
+antenna outside so that their communication equipment is next to the base. Teams will be settled
+in the bases, so there is a need for at least 10 meters of cable for their communication antennas.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+14
+
+Teams will be shown a certain area near the base to put their antennas. Antenna masts cannot
+exceed 3 meters in height, and the area might not be supportive of masts that are not strongly
+anchored as they are composed of loose soil.
+During the challenge, teams are free to choose communication bands and equipment. For
+this reason, planning should be done, considering the field can be approximately 40 meters in
+diameter. It is recommended that the communication equipment can work in the same
+environment as the surrounding wireless devices.
+During the challenge, the equipment may be used in accordance with Law No. 5809
+(Electronic Communications Law) of the Republic of Türkiye. For the frequency bands available for
+use, the table below is recommended to be examined.
+https://www.btk.gov.tr/uploads/pages/milli-frekans-plani.pdf
+It is the team's responsibility to operate the communication systems within the legal power
+and frequency limits.
+
+3.1.7 Rover Technical Check-in
+Technical check-in will be conducted on orientation day (the day before the missions).
+The rover must have the following features during team check-in. The judges will inspect the
+rover. This also helps the teams to check rovers before the mission day. The rovers must fulfill
+the technical check-in requirements :
+1.​ The rover must, over remote control, move at least 5 meters, do a 360 turn and
+push a button on a panel.
+2.​ The rover has an indicator light that works as stated in all modes.
+3.​ The rover must be equipped with four (4) M5 mounting holes for RSCP module
+installation. RSCP module dimensions and mounting hole specifications are
+provided in Section 8.15.
+4.​ The rover must be stopped remotely over RSCP communication.
+5.​ The rover must have a red emergency button at least 3 cm in diameter.
+6.​ The rover must fit inside and be able to leave the airlock on its own.
+
+3.2. Penalty Conditions
+​
+
+​
+
+People or teams that do not comply with the conditions specified in the General Rules and
+
+Ethical Rules will be evaluated by the Supreme Board of Judges. If deemed necessary, individuals or
+teams are asked to defend themselves. As a result of the evaluation, penalties such as deduction
+of points, failure of the mission, or disqualification from the challenge may be given. On
+non-compliance, the Supreme Board of Judges can deduce the scores of the team.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+15
+
+3.3. Objection Process
+1.​ The pre-challenge objection process works as follows:
+Before the challenge, address venue or rules concerns in writing via the
+specified website; report evaluation objections should be submitted in
+writing to the Organizing Committee via the provided email, and the
+Organizing Committee will forward these to the Supreme Board of Judges
+for examination.
+2.​ During the challenge, the objection process works as follows:
+a.​ Teams are allowed to object to the decisions taken by the judges for review
+by the Supreme Board of Judges, consisting of all judges.
+b.​ Video recordings taken by the Organizer during the challenge preparation
+and mission are used as evidence for objections.
+c.​ Each team has a maximum of 3 objection rights.
+d.​ Objections including possible proof must be delivered by the team leader
+via an email to the address: contact@anatolianrover.space
+e.​ The Supreme Board of Judges will announce the results of the objection
+evaluation at the latest before the challenge award ceremony.
+f.​ Any questions during the challenge will be addressed by the relevant
+judge. Teams can not object to a third person.
+
+3.4. Ethics
+1.​ Any kind of inappropriate behavior will be noted by the Organizing Committee and
+related authorities will also be informed immediately if necessary.
+​
+
+These behaviors can be summarized as follows;
+a.​ Insulting, swearing, threatening, etc., actions against other teams, people,
+or organizations through social media or in the challenge area during the
+challenge period.
+b.​ Physical, verbal provocation, etc., movements towards other competitors
+during the challenge.
+c.​ Behaviors that may disturb other teams in and around the challenge area.
+d.​ Being involved in fights in the challenge area.
+2.​ Language, religion, belief, political opinion, race, age, and gender discrimination will
+not be tolerated in the challenge area, as well as behaviors and practices that may
+jeopardize equal opportunity.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+16
+
+4. Definitions
+4.1. Challenge Area
+The challenge takes place in two separate fields: Moon Field and Mars Field. The Mars Field
+is home to Science mission and Night mission, while the Moon Field is home to Autonomous
+mission and Collaboration mission.
+
+4.2. Mission Fields
+The areas where the missions will be performed in the challenge area will be referred to as
+the "mission field". During the challenge period, only the field crew of the relevant team, the rover
+of the relevant team, and the judges can enter the mission fields and interfere with the field and
+the rover. Besides, watching the mission fields while other teams are competing will not be
+allowed.
+Mission fields will be overhauled for the next relevant team by the judges at the end of
+each mission. Judges can make changes to the field to ensure equality during the mission.
+Weight and size checks are made near the field where the rovers begin their preparations
+for the mission.
+There are two mission fields:
+Mars field: Includes Mars Base and resembles Mars surface by its color and features.
+Moon field: Includes Moon Base and resembles the Moon surface by its color and features.
+
+4.3. Rover
+Rover is a mobile device that can operate alone, without any physical connection with
+another system, and can be composed of various subsystems. Rover can only be commanded from
+the base or can move on its own (autonomous). Rovers can be commanded via RF remote control
+excluding satellite or cellular networks.
+Each rover will have a unique license plate for identification provided by the ARC
+Organization Committee.
+
+4.4. Bases
+There are two base replicas in the challenge area, one on each mission field. Competing
+teams will control their rover within the bases during the missions.
+They are closed areas that are located in the mission field and connected to the rest only
+by an "airlock". Only the base crew of the relevant team and the judges can enter the base. The
+base crew can only control the rover remotely (via remote-wireless connection). During missions,
+the base crew will not be able to see the rover directly. The relevant team must install the
+necessary equipment and antenna connections to the base to control the rover before starting
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+17
+
+the mission. Before each mission, teams will be given some specified time for preparation
+according to the challenge timetable.
+
+4.5. Base Crew
+It is a crew, formed by a selection of team members, that is the only authorized and
+responsible crew to remotely control the rover in the base. The base team cannot communicate
+with the outside except the rover and judges during the mission. The base crew starts and finishes
+commanding the rover by the judges’ directions to accomplish the mission. During the
+autonomous driving stages, the base crew must comply with the instructions and the directions of
+the judges. If base crew members leave the base when necessary, they cannot return to the base
+before the current mission is finished. That team member can only be a field crew or a spectator.
+The base crew may decide not to continue the mission.
+
+4.6. Field Crew
+It is a crew consisting of selected members of the relevant team who can observe the rover
+in the field of mission during the missions. The crew is responsible for the preparation of the rover
+in the field of mission, decisions on whether to intervene when necessary and responding to the
+rover in emergencies. The field crew should not voluntarily enter the camera view of the rover
+during the mission. In the case of doing that by mistake, they should standstill. It is forbidden for
+the field crew to make hand signals or speak during their mission, except in emergencies and
+interventions. Judges may dismiss the field crew from the field of mission without giving any
+reason.
+
+4.7. Judges
+The judges are the most authorized officials in the challenge. It is essential to pay
+attention to and follow the instructions and directions of the judges. During the challenge, there
+will be at least one judge at each of the places like the base, the field, and around the challenge
+area. The judges are responsible for the organization of the challenge and guiding/assisting the
+relevant team.
+
+4.8. Intervention
+During the mission, only the base crew can decide to intervene, unless there is an
+emergency situation in the field. In cases where the safety of the people in the field is at risk due to
+a malfunction in the rover or the conscious control of the base crew, the judges may decide to
+intervene by pressing the rover’s emergency button. Mission time will not be paused when
+intervention begins. When the team decides to intervene, they must inform the judges. Then, the
+field crew carries the rover to the airlock without communicating with the base crew. For each
+intervention, scores are deducted from the relevant team for that mission, as indicated in the
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+18
+
+Score Table. During a mission, the rover can be interfered with at most 3 times. When the 4th
+intervention is performed, it is assumed that the team has decided not to continue the mission but
+is allowed to use the time remaining for testing purposes. As long as rovers drive and enter the
+airlock by themselves, the base crew can fix their rovers without getting an intervention. This does
+not count as an intervention.
+
+4.9. Field Onboarding
+Before the collaboration mission begins, judges will tour the teams. Judges will explain
+each mission step to the team members and will answer their questions firsthand on-site.
+
+4.10. Skipping
+Teams can skip the steps they want by informing the judge. Skipping does not deduct
+points directly, but mission time continues. If a team does not use their right to skip, they must
+take each mission step in order, without skipping. In case of a skip, the judge can make the
+necessary changes on the field and the rover, such as the arrangement of the position, so that the
+next mission steps are not adversely affected. While the judge makes the necessary changes, it is
+forbidden to touch or intervene in the vehicle by any team member, and it is going to be considered
+intervention unless specified in the rules. The skipping rules specific to missions are as follows:
+Science Mission: Skipping applies. The teams can decide to try the skipped step again. However, if
+step 6 is skipped, the rover cannot conduct the steps regarding the second sampling area.
+Night Mission: Each step can be skipped. However, if a step is skipped, it cannot be retried.
+Autonomous Mission: Each step can be skipped. However, if a step is skipped, it cannot be
+retried.
+Collaboration Mission: Sensor Task cannot be skipped. Teams that achieve the Sensor Task can
+decide to skip the next tasks and try the skipped task again.
+
+4.11. Field Dimensions
+Mars Field and Moon Field are approximately 40 meters in diameter. Both sites have a
+circular shape. The coordinates of the center point of the fields can be provided before the
+missions.
+
+4.12. Coordinate System
+WGS84 lat/long with EGM96 geoid height, (Lat: dd.dd., Long: dd.dd. Altitude: meters)
+format will be used when locations are given or requested. Ex: (41.100276, 29.020975, 53.96).
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+19
+
+4.13. Border Violation
+If the rover goes off-site, the intervention rules apply, and the field crew brings the rover
+back into the field. Teams will be provided with center coordinates of the two fields and highly
+encouraged to implement fencing algorithms.
+
+4.14. Criteria for “Reaching Target”
+Measurements will be used to score points in mission steps that include expressions such
+as "goes/returns near the target". The distance between the outer surface of the target object and
+the rover's closest point to this surface is measured. If it is less than the requested distance (2
+meters for Autonomous Mission and 1.5 meters for remaining unless otherwise stated), the rover is
+considered to approach or arrive. For example, to go near/reach the base, it is accepted that there
+is a part of the rover within the specified distance from the outer surface of the base.
+
+4.15. Mission Module
+The RSCP communication module will be connected prior during any mission autonomy
+needed. Make sure to have a long enough RS-232 cable with a D9-SUB connector to connect
+the module.
+
+5. Documentation
+5.1. Application Form
+Every team must complete the challenge application form on the official ARC website.
+Teams must provide team information that includes “team name”, “list of the team members'', and
+“the contact information of the team leader and the team advisor” to the Organizing Committee.
+Teams that do not present the complete team information before the design report submission is
+due will not be allowed to participate in the challenge. After the application is completed, all team
+members must join the ARC Community Discord server. During the on-site challenges, all
+communication will happen through Discord (See discord.com).
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+20
+
+5.2. Reports
+5.2.1. Design Report
+To become a finalist and participate in the challenge, the candidate teams must report
+their work and electronically send the report together with the video they prepared, as specified
+on the challenge website, within the dates specified in the challenge calendar. The Design Report
+will be uploaded for public view after finalists are announced. The report must be prepared using
+the template provided on the ARC website. Expected contents and scoring parameters are stated
+in the Score Table. This score, combined with the video presentation score, is to be used for
+ranking the teams to select finalists.
+
+No
+
+Title
+
+Description
+
+Detail
+
+Score
+
+1
+
+Team Name
+
+Name of the team and, if applied, name of the rover.
+
+1
+
+2
+
+Contact
+
+Contact information and social media links of the team
+
+1
+
+Name and address of the affiliated academic institution.
+
+1
+
+Academic
+
+3
+4
+
+Institution
+Team Info
+
+5
+
+Academic
+
+Name, affiliated academic institution, and contact information
+
+Consultant
+
+of academic consultant.
+
+History of the
+
+A paragraph of team history including foundation date,
+
+team
+
+attended competitions, and experience.
+
+Active Members A table of active members including the following information:
+
+6
+
+List
+
+Name (or initial letters), University Major, and duty in the team.
+
+7
+
+Team Photo
+
+A photo/screenshot of the whole or part of the team.
+
+8
+
+Work Calendar
+
+9
+
+Team Formation
+
+Explain the work on the project using a Gantt chart. Include
+10-15 items in the Gantt chart.
+How is the team workforce structured? (2-3 sentences)
+Include a graphic to explain the structure as well.
+
+1
+5
+
+2
+1
+10
+5
+
+How does the team design, build, and test the rover
+10
+
+Workplace
+
+physically? Explain the workplace. (2-4 sentence) Include a
+
+3
+
+photo/screenshot of the workplace.
+11
+12
+13
+
+How much are the project funds at the time of submission of
+
+Management
+
+this document?
+Funding
+
+How much spending is expected for the development costs?
+How much spending is expected for the travel costs?
+What is the team's plan in an insufficient funding situation by
+the competition date?
+
+The ARC Committee, 2026. All rights reserved ©
+
+2
+2
+2
+
+ARC’26 Manual v.3​
+
+14
+
+​
+
+​
+
+Logistics
+
+15
+
+Mobility system
+
+​
+
+What is the team's plan to package and bring the rover to the
+competition site by July? (4-6 sentences)
+
+21
+
+4
+
+Visuals of the system (2 photos/screenshots),
+
+12
+
+Technical Specifications, including mass and size (3-5
+sentences)
+Discuss the system's adequacy for its role in competition
+missions. (3-5 sentences)
+
+21
+
+What is used? Describe the system (3-5 sentences)
+Why is the system chosen? What are the considerations?
+
+22
+
+What are the weaknesses and strengths? (3-5 sentence)
+
+23
+
+Electronics and
+
+24
+
+power system
+
+Unique points and inspirations (3-5 sentences)
+Visuals of the system (2 photos/screenshots)
+
+12
+
+Technical Specifications including mass and battery duration
+
+25
+
+(3-5 sentences)
+Rover Design
+
+Discuss the system's adequacy for its role in competition
+missions. (3-5 sentences)
+
+27
+
+What is used? Describe the system (3-5 sentences)
+Why is the system chosen? What are the considerations?
+
+28
+
+What are the weaknesses and strengths? (3-5 sentences)
+Manipulation
+system
+
+Unique points and inspirations (3-5 sentences)
+Visuals of the system (2 photos/screenshots)
+
+12
+
+Technical Specifications, including mass, max payload, and
+
+31
+
+size (3-5 sentences)
+Discuss the system's adequacy for its role in competition
+
+32
+
+missions. (3-5 sentences)
+
+33
+
+36
+
+​
+
+3D image of the rover should be provided
+
+20
+
+35
+
+​
+
+Unique points and inspirations (3-5 sentences)
+
+19
+
+34
+
+​
+
+What are the weaknesses and strengths? (3-5 sentence)
+
+18
+
+30
+
+​
+
+Why is the system chosen? What are the considerations?
+
+17
+
+29
+
+​
+
+What is used? Describe the system (3-5 sentences)
+
+16
+
+26
+
+​
+
+What is used? Describe the system (3-5 sentences)
+Why is the system chosen? What are the considerations?
+
+Science
+
+What are the weaknesses and strengths? (3-5 sentence)
+
+Payload
+
+Unique points and inspirations (3-5 sentences)
+Visuals of the system (2 photos/screenshots)
+
+The ARC Committee, 2026. All rights reserved ©
+
+12
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+22
+
+​
+
+Technical Specifications including mass and sensors (3-5
+
+37
+
+sentences)
+Discuss the system's adequacy for its role in competition
+
+38
+
+missions. (3-5 sentence)
+
+39
+
+What is used? Describe the system. (3-5 sentence)
+Why is the system chosen? What are the considerations?
+
+40
+Ground station
+
+41
+
+What are the weaknesses and strengths? (3-5 sentence)
+Unique points and inspirations (3-5 sentences)
+
+equipment and
+
+42
+
+system
+
+43
+
+12
+
+Visuals of the system (2 photos/screenshots)
+
+communication
+
+Technical Specifications including resilience to noise and
+communication range (3-5 sentences)
+Discuss the system's adequacy for its role in competition
+
+44
+
+missions. (3-5 sentence)
+TOTAL
+
+100
+
+5.2.2. Video Presentation
+Participating teams should prepare a video in which they show their rover’s readiness for
+the challenge. The video link must be uploaded to the challenge website together with the
+reports at the latest on the report submission date. The video must be shared by the
+participating team publicly on YouTube. The purpose of the video is to show the team and the
+rover's compliance with the challenge regulations and how ready they are to obtain scores from
+the missions. The judges will score the uploaded videos according to the criteria stated below.
+The suggestion of the ARC Organization Committee for the content duration is 6 minutes,
+and it can be up to 10 minutes. Additionally, teams must add timestamp markers in their
+YouTube video descriptions to indicate key sections. Recommended content in the video and
+scoring is stated in the table below. Also, the rovers in the video must fulfill the requirements in
+the 3.1.7 Rover Technical Check-in section. Video Presentations from previous challenges can
+be found on the ARC Website's “Participants” section.
+
+No
+
+Title
+
+1
+
+Team Name
+
+Name of the team and if applied, name of the rover.
+
+Institution
+Team Info
+
+4
+
+Detail
+
+Academic
+
+2
+3
+
+Description
+
+Name of the affiliated academic institution.
+
+History of the
+
+The team's history including foundation date,
+
+team
+
+attended competitions, and experience.
+
+Team Visual
+
+Score
+
+A photo/screenshot/video of the whole or part of
+the team.
+
+The ARC Committee, 2026. All rights reserved ©
+
+8
+
+ARC’26 Manual v.3​
+
+5
+6
+
+​
+
+​
+
+Astronaut
+Management
+
+Workplace
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+What is your team’s training plan for your
+astronauts?
+How does the team design, build and test the rover
+physically? Explain the workplace.
+
+7
+
+What is used? Describe the system.
+
+8
+
+Technical Specifications including mass and size.
+
+9
+
+Mobility
+system
+
+10
+
+Why is the system chosen? What are the
+
+12
+
+What is used? Describe the system.
+
+13
+
+Technical Specifications including mass and size.
+Electronics and
+power system
+
+15
+
+18
+19
+
+Why is the system chosen? What are the
+
+objectives in mind.
+
+Technical Specifications including mass and size.
+Manipulation
+
+Why is the system chosen? What are the
+
+6
+
+considerations?
+Visuals of the system to show mechanisms.
+Demonstration of the system with ARC'26 mission
+
+21
+
+objectives in mind.
+
+22
+
+What is used? Describe the system.
+
+23
+
+Technical Specifications including mass and size.
+Why is the system chosen? What are the
+Science Payload
+
+25
+
+8
+
+6
+
+considerations?
+Visuals of the system to show mechanisms.
+Demonstration of the system with ARC'26 mission
+
+26
+
+28
+
+6
+
+What is used? Describe the system.
+
+Rover Design
+
+20
+
+27
+
+4
+
+considerations?
+
+Demonstration of the system with ARC'26 mission
+
+system
+
+24
+
+8
+
+Visuals of the system to show mechanisms.
+
+16
+17
+
+6
+
+Visuals of the system to show mechanisms.
+
+mission objectives in mind.
+
+14
+
+2
+
+considerations?
+
+Demonstration of the system with ARC'26
+
+11
+
+23
+
+​
+
+objectives in mind.
+Ground station
+equipment and
+communication
+
+8
+
+What is used? Describe the system.
+Technical Specifications including mass and size.
+
+The ARC Committee, 2026. All rights reserved ©
+
+4
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+system
+
+29
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+24
+
+​
+
+Why is the system chosen? What are the
+considerations?
+
+30
+
+Visuals of the system to show mechanisms.
+Demonstration of the system with ARC'26 mission
+
+31
+
+objectives in mind.
+Software
+
+32
+
+Architecture
+
+33
+
+Whole Rover
+
+34
+
+Detailed flowchart of the software systems
+Demonstration of the system with ARC'26 mission
+objectives in mind.
+
+Video Clarity
+
+Quality of the content and presentation
+TOTAL
+
+6
+8
+10
+10
+100
+
+5.2.3. Landing Site Proposal
+​
+
+The Science Mission is conducted within the designated Mars Field, which corresponds to
+
+an actual region on Mars. Before the field is finalized, teams may propose their preferred landing
+location by submitting a “Landing Site Proposal” that supports their hypothesis and/or scientific
+area of interest.
+The judges will select the final Mars Field based on the submitted Landing Site Proposals.
+The updated submission deadline is 12 February 2026. It should be submitted via the ARC website.
+The selected Mars Field will reflect the diversity of geological structures and the richness
+of the area’s geological history. The Landing Site Proposal Template is available on the ARC
+website, alongside the manual.
+Submitting a Landing Site Proposal is optional, but it is highly beneficial. The scientific
+motivations, hypotheses, and preferred locations described in these proposals will be considered
+during the selection of the Mars Field. Teams that submit a successful Landing Site Proposal that
+meaningfully contributes to the field selection will find their team name featured in the final Mars
+Field during the ARC finals.
+
+5.2.4 Science Report
+The Mars Field for ARC’26 will be designed based on Athabasca Valles (8.6°N 205.0°W) and
+its surroundings. Also, the Mars Field includes details with teams who submitted Landing Site
+Proposals. Besides, the judges will shape the questionnaire considering these proposals in favor
+of the teams during the presentation part of the Science Mission.
+In terms of geology, the teams must be ready to land in the Athabasca Valles region. The
+sketch composed of structures which will be in the field during the ARC’26 finals is released in the
+Science Report Template. It will be available on the website one week after the release of the last
+version of the ARC’26 Manual. The teams must develop a clear main scientific hypothesis based
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+25
+
+on the geological features of the selected region. Teams should also prepare side hypotheses that
+support or expand on the main scientific question. All hypotheses must be described in detail in
+the Science Report.
+Teams must specify a landing point within the provided challenge-area sketch that aligns
+with their hypotheses. This point will serve as the rover’s starting location during the Science
+Mission. When selecting the landing point, teams should ensure that it supports their scientific
+objectives and is located on terrain suitable and safe for rover traversal.
+The Mars Field sketch will represent key geological structures inspired by the selected
+region on Mars. These features will be adapted for the competition environment and will not be
+direct or scaled replicas of real Martian landforms. Structures in the field may reach up to 2 meters
+in height or depth, with slopes up to 30 degrees.
+In addition to hypotheses, teams must design at least one scientific instrument to test
+them. The Science Report should describe the purpose of the instrument, how it was developed,
+how it operates, how it will be used during the mission, and how it supports the main and side
+hypotheses.
+The Science Report must also outline the experiments planned to test the hypotheses. All
+experiments must be scientifically meaningful and directly tied to the hypotheses. Experiments
+that are unrelated to the hypotheses will not earn points.
+The report must clearly state the main and side hypotheses, the sample types targeted for
+collection, the designed instrument or instruments and their development, the planned
+experiments and their justification, and the expected scientific outcomes.
+All hypotheses and plans described in the Science Report must be followed during the
+challenge, and deviations may lead to point deductions. Reports must be prepared using the
+official template provided on the ARC website.​
+
+5.2.5. Cost Report
+Teams are obliged to write a report on the cost of their rover. The total cost of the rovers
+cannot exceed 25000 US Dollars. The cost report template will be shared with teams on our
+website. All the details on the template should be fulfilled by the teams, and there should be at
+least 30 expense items of the rover. All the provided information must be provable with official
+documents on the challenge day upon request. The financial report is mandatory for participation
+in the final stage of the competition. In addition, the reports will be scored, and the team with the
+best report will be awarded.
+
+5.2.6. Collaboration Presentation
+After the announcement of the finalists, teams shall communicate with other finalist
+teams to plan potential collaborations for the Collaboration Mission. Teams shall evaluate potential
+partners based on rover capabilities, including information presented in VPR videos.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+26
+
+Each team shall prepare a presentation describing their approach to the Collaboration Mission.
+The presentation shall include the following:
+●​ Collaboration strategy and partner selection criteria
+Example: We planned to collaborate with Team A for Step 5 because their robotic arm is
+highly effective at keyboard control, while our advanced cameras can assist them in
+precision tasks. But for Step 6 we will group with Team C as both of our rovers have 360
+cameras so we can position each other well whilst carrying pipe.
+●​ Overview of the team’s rover capabilities and mission readiness
+●​ Planned communication methods between the rover, astronaut, and ground control crew
+●​ Justification of each selection for every mission
+●​ Approach for adapting or changing collaboration groups during the mission if required
+●​ Astronaut selection criteria and training program, including the astronaut’s role in
+independently resolving rover issues
+●​ Teams are encouraged to consider collaboration with multiple teams to ensure operational
+flexibility. Teams are encouraged to present their collaboration strategy using flowcharts
+or similar visual representations. The presentation shall be prepared using the official
+template provided on the ARC website. The presentation shall be evaluated as part of the
+Collaboration Mission score. All teams and the ARC judge shall attend the presentations,
+which shall take place prior to the Collaboration Mission.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+27
+
+6. Background of the Missions
+6.1. Mars Story
+On the desolate Martian surface, a journey begins at the landing area. The rover’s lens
+sweeps the dust to capture the scientific secrets of the silent terrain, reading the planet's history
+like the ancient chronicles of Isaac Asimov’s galactic empire. Analyzing subsurface samples, the
+science mission invites teams to explore their hypotheses.
+As the Sun vanishes behind the Martian horizon, the rover emerges from the airlock to save
+the day, as the astronaut’s signals disappear. It navigates the deepening shadows to locate the
+astronaut. Since his work is not finished, rover takes over. Following a shimmering fuel trail through
+the darkness, the rover seals the rocket’s fuel leak and restores the oxygen flow. After
+documenting the success with a photograph, it turns back to the airlock.
+
+6.2. Moon Story
+Activating its autonomous mode, the rover must install a communications system. The
+rover finds the peak to set up the antenna. Then in the dust of Shackleton Crater, the rover
+identifies the ilmenite-rich basalt. It plunges into the lava tube to investigate before navigating the
+terrain back to the base.
+Beyond the individual sensor tasks, the rovers operate in sync to align mirrors and install
+antennas as the usual keep-up. The rovers collaborate to repair pipelines and fix instrument panels
+to restore the systems. By clearing the blocked lava tube together, rovers prepare the base for
+another day on the Moon.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+28
+
+7. Missions
+7.1. The Final Stage Missions
+7.1.1. Science Mission:
+Time Limit: 30 minutes field mission + 10 minutes laboratory + 10 minutes presentation
+Mission Field: Mars
+
+7.1.1.1. Steps
+This mission consists of 3 main parts:
+Part 1 | Landing & Exploration (30 min)
+1.​ Start at the landing area. ​
+The landing area is identified in the science report by the teams.
+2.​ Survey the area.
+The rover should take panoramic/stratigraphic pictures. The purpose of this image
+is to observe all the structures in the area.
+3.​ Navigate to the sampling area and collect a sample.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+29
+
+The first sampling area is the location indicated by the teams in the science report.
+The sample should be taken using a drilling system at a minimum depth of 10 cm
+and a minimum weight of 10 g.
+4.​ Preserve the sample in a closed and sealed container.
+Samples that are in non-sealed containers will not be evaluated.
+5.​ Conduct onboard measurements.
+Measurements must be recorded.
+6.​ Navigate the designated “solar conjunction” point.
+The rover should reach the solar conjunction point which is indicated in the sketch.
+The coordinates of the solar conjunction will be shared on the mission day by the
+judges. This location is the targeted point to be reached before the solar
+conjunction begins. When the rover reaches this location, the solar conjunction
+begins. It lasts 10 minutes. These 10 minutes are within the 30 minutes of mission
+time. During this 10 minutes, the rover is allowed to move only autonomously.
+Otherwise, it has to wait for solar conjunction to end.
+7.​ Navigate the second sampling area.​
+The coordinates of the second sampling area will be shared on the mission day by
+the judges. The rover either navigates to the second sampling area autonomously,
+or waits for solar conjunction to end to move non-autonomously.
+8.​ Collect the sample from the second sampling area.​
+The sample should be taken using a drilling system at a minimum depth of 10 cm
+and a minimum weight of 10 g.
+9.​ Preserve the sample in a closed and sealed container.
+Samples that are in non-sealed containers will not be evaluated.
+10.​ Conduct onboard measurements.
+Rover has to identify related chemical or physical properties of soil with an
+onboarded chemical or physical analysis method.
+11.​ Return to the airlock.
+The rover should navigate back and enter the airlock so that no part of it is left
+outside.
+12.​ Hand over the samples to the judges.
+During the delivery, the samples must be in a sealed container.
+13.​ Visit the mystery zone.
+This step is an optional bonus that requires navigation, rover cameras, and
+scientific explanation during the presentation.
+Part 2 | Laboratory (10 min)
+1.​ Astronaut scientists conduct their experiments.
+Based on the hypothesis that teams come up with the science report, each
+science team can prepare an experiment set that supports their initial hypothesis.
+Teams have to complete all experiments within 10 minutes. There is no stretch on
+the timeline.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+30
+
+Part 3 | Presentation (10 min)
+Teams should be consistent with their Science Report. Science Report points will apply to this part.
+1.​ Explain the mission area. ​
+The geology of the area is explained using photographs. Science team members
+should interpret the observed geomorphological structures.
+2.​ Explain the stratigraphy of the region. ​
+The relative age relationships of morphological structures are explained. The age
+relationship of the unit from which the sample is taken with the surrounding units
+is expected to be specified.
+3.​ Explain the hypothesis and the selected locations. ​
+The hypothesis indicated in the previously submitted report is expected to be
+explained. The selected locations in the area should also be described. These
+locations are previously stated in the science report. It should be clearly explained
+why these locations are chosen for the test and what types of elements were
+considered, e.g., vitality, aquatic, or geological.
+4.​ Explain the sampling location and photos gathered during the mission. ​
+Teams show visual data to support their hypothesis. The location, where the
+sample is taken, should be photographed with a scale.
+5.​ Identify the samples.
+Teams should define the characteristics (color, size, etc.) and identify what it is.
+6.​ Explain the onboard measurement/ experiment set and logic of design.
+All experiments that are chosen in the science report must be correlated with
+hypotheses. The points of the onboard measurements will be gathered during the
+presentation based on the developed system, its performance in the field, and its
+accuracy with the hypothesis.
+7.​ The results based on all onboard measurements/experiment sets should be
+explained.
+The science team must provide a clear explanation of onboard equipment
+(including sensors). It must be clarified how it is working, what the design
+parameters are and provide a comparative data set to the accuracy of data that is
+collected from the sample. Any unnecessary sensors or equipment usage which is
+unrelated to the experiment set will not be granted.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+31
+
+7.1.1.2. Scores
+
+No
+
+Section
+
+Parameter
+
+Score
+
+1
+
+Exploration - Selected Area
+
+Taking photographs of the sampling site
+
+3
+
+2
+
+Exploration - Selected Area
+
+Taking panoramic photograph
+
+3
+
+3
+
+Exploration - Selected Area
+
+4
+
+Exploration - Selected Area
+
+Measurements with onboard sensors
+
+2
+
+5
+
+Exploration - Selected Area
+
+The depth of sample site min 10 cm with drill
+
+8
+
+6
+
+Exploration - Selected Area
+
+Amount of sample size min 10 g
+
+4
+
+7
+
+Exploration - Given Area
+
+Navigating to given sampling area
+
+1
+
+8
+
+Exploration - Given Area
+
+The depth of sample site min 10 cm with drill
+
+8
+
+9
+
+Exploration - Given Area
+
+Amount of sample size min 10 g
+
+4
+
+10
+
+Exploration - Given Area
+
+11
+
+Exploration - Given Area
+
+Measurements with onboard sensors
+
+2
+
+12
+
+Exploration - Selected Area
+
+Carrying sample to the airlock with closed and sealed container
+
+1
+
+13
+
+Exploration - Given Area
+
+Carrying sample with a closed and sealed container
+
+1
+
+14
+
+Exploration
+
+Reaching Mars base after sampling
+
+1
+
+15
+
+Exploration - Selected Area
+
+Delivering sealed container to judge inside Mars base
+
+1
+
+16
+
+Exploration - Given Area
+
+Delivering sealed container to judge inside Mars base
+
+1
+
+17
+
+Exploration - Bonus
+
+Navigating to the mystery zone and take a picture
+
+1
+
+18
+
+Presentation
+
+Measurements with onboard equipment (instruments are expected
+to developed by the team)
+
+Measurements with onboard equipments (instruments are
+expected to developed by the team)
+
+Explaining mission area using photographs (structures,
+stratigraphy...)
+
+The ARC Committee, 2026. All rights reserved ©
+
+10
+
+10
+
+10
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+32
+
+19
+
+Presentation
+
+Explaining the selection of the sampling area
+
+5
+
+20
+
+Presentation
+
+Showing photographs of the site sampling area
+
+2
+
+21
+
+Presentation
+
+Explaining photographs of the sampling area
+
+2
+
+22
+
+Presentation
+
+Showing panoramic photographs
+
+2
+
+23
+
+Presentation
+
+Explaining panoramic photographs
+
+2
+
+24
+
+Presentation
+
+Identifying sample
+
+2
+
+25
+
+Presentation
+
+Explaining sample
+
+2
+
+26
+
+Presentation
+
+Suitability of onboard equipments for sampling area
+
+5
+
+27
+
+Presentation
+
+Suitability of experiments for sample
+
+2
+
+28
+
+Presentation
+
+Suitability of area and sample relationship
+
+2
+
+29
+
+Presentation
+
+Showing onboard sensor results in table with screenshots
+
+2
+
+30
+
+Presentation
+
+Explaining sensor results with frame of experimental results
+
+2
+
+31
+
+Presentation - Bonus
+
+Show the photo of the mystery zone and explain
+
+4
+
+TOTAL
+
+105
+
+7.1.1.3. Details
+Laboratory Rules
+During the laboratory part, every team should follow the lab rules:
+●​ Teams are not allowed to bring heating devices (electrical, gas, or portable), and there will
+be no support for any heating activity (including kettle)
+●​ Teams are not allowed to bring flammable chemicals.
+●​ Teams are not allowed to bring strong chemicals (outside 4<pH<12 boundary) more than
+10 ml.
+●​ All chemicals and devices that will be used during the competition should be declared with
+a science report, if teams do not confirm their setup and chemicals before the
+competition, they will not be used during the competition.
+●​ Each team must bring a chemical declaration form before starting experiments. - this
+declaration will be signed by a judge and science team member.
+●​ Each team has to collect disposals before they leave the experimenting area.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+33
+
+7.1.2. Night Mission
+Time Limit: 15 Minutes
+Mission Field: Mars
+Mission Time: After sunset
+
+7.1.2.1. Steps
+1.​ Locate the Astronaut
+The rover exits the airlock and navigates to the astronaut’s location.
+2.​ Deliver Emergency Kit and Retrieve Repair Tool
+The rover delivers the emergency oxygen kit taken from the airlock to the
+astronaut and retrieves the repair tool from beside them.
+3.​ Follow the Fuel Trail and Reach the Damaged Rocket
+The rover detects the fuel trail on the ground using its camera system and follows
+the designated route toward the damaged rocket.
+4.​ Identify the Leak Point
+The rover scans the rocket using its camera, arrives at the leak point, and takes a
+photo of the leak on the rocket body. The source of the leak is the rocket fuel. The
+rover can identify the leak from its colored/recognizable and amorphous shape.
+5.​ Apply Repair Tool
+The rover applies the designated repair tool onto the leak point to seal the rocket’s
+fuel leak.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+34
+
+6.​ Proceed to Oxygen Tank
+The rover navigates to the oxygen tank system to address the secondary leak on
+the feed line of the tank. Take a photo of the leak.
+7.​ Close the Valve
+The rover closes the valve, isolating the damaged section of the oxygen system.
+8.​ Attach Pipe to Oxygen Tank
+The rover disconnects the damaged pipe, attaches the intact pipe to the oxygen
+tank, and opens the valve to restore the oxygen supply using its robotic arm. The
+rover must firmly push the pipe onto the connector on the tank to ensure a secure
+connection.
+9.​ Document the Rocket and Oxygen Tank Repair (Take Photo)
+The rover takes two clear photographs showing the repaired rocket leak area and
+the new pipe connection.
+10.​ Return to the Airlock
+The rover returns to the starting point and fully enters the airlock to complete the
+mission.
+
+7.1.2.2. Scores
+No
+
+Parameter
+
+1
+
+Locate the Astronaut
+
+2
+
+3
+
+Detailed Explanation
+
+the astronaut’s location.
+
+Deliver Emergency Kit and
+
+The emergency oxygen kit is delivered correctly and the
+
+Retrieve Repair Tool
+
+repair tool is retrieved without error.
+
+Reach the Damaged
+
+The rover arrives at the damaged rocket system with the
+
+Rocket
+
+help of a leaked fuel trail without collisions.
+
+4
+
+Identify the Leak Point
+
+5
+
+Apply Repair Tool
+
+6
+
+Proceed to Oxygen Tank
+
+7
+
+Close the Valve
+
+8
+
+The rover exits the airlock and successfully navigates to
+
+The rover correctly identifies the damaged or leaking
+section using its camera.
+The repair tool is applied accurately and securely to seal
+the fuel leak.
+The rover successfully navigates to the oxygen tank
+system.
+The rover closes the valve correctly, isolating the
+damaged section of the oxygen system.
+
+Disconnect the Damaged
+Pipe to Oxygen Tank
+
+The damaged pipe was disconnected.
+
+The ARC Committee, 2026. All rights reserved ©
+
+Score
+
+8
+
+10
+
+10
+
+15
+
+15
+
+5
+7
+5
+
+ARC’26 Manual v.3​
+
+9
+
+10
+11
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+Attach Pipe to Oxygen
+
+The intact pipe was connected to the tank, and the valve
+
+Tank and Open the Valve
+
+was opened to restore the oxygen flow.
+
+Document the Rocket and Clear and properly framed photograph(s) of both repaired
+Oxygen Tank Repair
+
+systems are captured.
+
+Return to the Airlock
+
+The rover fully enters the airlock with no part left outside.
+TOTAL
+
+35
+
+15
+
+5
+5
+100
+
+7.1.2.3. Details
+●​ The mission will be performed in the dark. Therefore, rovers should be prepared for night
+operations.
+●​ Rovers must navigate without causing damage to the rocket or mission props.
+
+​
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+36
+
+7.1.3. Autonomous Mission
+Time Limit: 30 minutes
+Mission Field: Moon
+
+7.1.3.1. Steps
+1.​
+
+Use the activity light correctly during the whole mission.
+
+​
+
+The rover must indicate its transition to autonomous mode by activating a yellow
+light.
+Antenna Installation
+
+2.​
+
+Move out of the airlock.
+The team members will place the rover inside the airlock at the lunar base. If the
+rover's dimensions do not comply with the specified limitations, the team will skip
+this step and begin the mission from the airlock exit.
+
+3.​
+
+Reach the antenna area.​
+The rover autonomously drives to point within 10 meters of the antenna area
+specified by coordinates. Once it arrives at the designated area, it searches for a
+suitable height within a 10-meter radius.
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+ARC’26 Manual v.3​
+
+4.​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+37
+
+​
+
+Find the highest point of the antenna area and send coordinates.​
+Scan a circular area with a 10-meter radius to find the peak of a hill. After finding
+the peak, this is the antenna area. The rover should reach there and come to a
+complete stop. Transmit coordinates over RSCP. The rover will receive the next task
+from the communication server.
+
+5.​
+
+Install the antenna system on the peak.​
+The rover will mount an antenna system. System can be handled to the rover as it is
+prepared for the mission at the lunar base. The rover will autonomously proceed to
+the specified coordinates and drop the antenna system at the peak point.
+
+Shackleton Prospect
+6.​
+
+Reach the “Shackleton Crater” area.​
+The rover autonomously reaches to the center of the 10-meter-diameter
+Shackleton Crater’s coordinates.
+
+7.​
+
+Locate the Target: Ilmenite-Rich Basalt and Send coordinates of the target.
+The rover must visually distinguish and precisely locate the single designated
+priority
+
+rock
+
+simulant
+
+among
+
+the
+
+three
+
+distinct
+
+geological
+
+simulants
+
+(cobble-boulder sized) present, based on color, texture, and structural
+characteristics. Locate the dark-colored Ilmenite-Rich basalt (a primary source
+of titanium). Transmit coordinates of the target over RSCP. The rover will receive
+the next task from the communication server.
+​
+
+Lava Tube Exploration
+8.​
+
+Reach the provided coordinates of the lava tube entrance.​
+The rover will autonomously reach the entrance of the lava tube.
+
+9.​
+
+Enter the lava tube.​
+Enter the lava tube by detecting the ArUco markers at the entrance, then navigate
+autonomously within the tube.
+
+10.​
+
+Measure the length of the covered (roofed) section.​
+During its exploration, the rover must use its onboard sensors and cameras to
+measure the length of the tunnel's covered section.
+
+11.​
+
+Exit the lava tube and transmit the covered section length.​
+After completing the measurement, the rover shall detect the ArUco markers at
+the lava tube exit, leave the tube, and report the measured length via the RSCP
+communication protocol.
+
+​
+
+Return to the Base
+12.​
+
+Reach the airlock.​
+After receiving the “return” message, the rover must autonomously navigate back
+to the airlock by detecting the ArUco markers at the airlock entrance while avoiding
+obstacles. The route is entirely at the team’s discretion, except that re-entering
+the lava tube is not allowed.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+13.​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+38
+
+Enter the airlock.​
+Once the rover enters the airlock, the mission is considered complete.​
+
+7.1.3.2. Scores
+
+No
+
+Section
+
+Parameter
+
+Score
+
+1
+
+Antenna Installation
+
+Use activity light correctly for the whole mission
+
+10
+
+2
+
+Antenna Installation
+
+Move out of the airlock
+
+4
+
+3
+
+Antenna Installation
+
+Reach the antenna area
+
+10
+
+4
+
+Antenna Installation
+
+Send correct coordinates of the peak
+
+30
+
+5
+
+Antenna Installation
+
+Install antenna to the peak
+
+12
+
+6
+
+Shackleton Prospect
+
+Reach to the “Shackleton Crater” area
+
+10
+
+7
+
+Shackleton Prospect
+
+Locate the Basalt Target and send coordinates
+
+30
+
+8
+
+Lava Tube Exploration
+
+Reach the provided coordinates of lava tube entrance
+
+10
+
+9
+
+Lava Tube Exploration
+
+Enter lava tube
+
+16
+
+10
+
+Lava Tube Exploration
+
+Exit lava tube
+
+16
+
+11
+
+Lava Tube Exploration
+
+Measure and send the correct length of covered (roofed) section
+
+30
+
+12
+
+Return to the Base
+
+Reach to airlock
+
+10
+
+13
+
+Return to the Base
+
+Enter the airlock fully
+
+12
+
+TOTAL
+
+No
+1
+
+Penalties
+Detection of remote
+control
+Remote Stop
+
+2
+
+(to stop rover over
+RSCP communication)
+
+200
+
+Detailed Explanation
+
+Amount
+
+No scores can be earned from the mission.
+
+-100%
+
+Remote stop does not count as an intervention. Teams are
+encouraged to request a remote stop early whenever their rover
+malfunctions, goes off site or crashes to prevent a forced
+
+-5%
+
+intervention. There is no limit for the number of remote stops.
+
+7.1.3.3. Details
+Teams are prohibited from communicating with their rovers, including the issuance of start
+and stop commands, they may request the judge to issue Remote Stop via RSCP. Prior to the
+beginning of the mission, the ARC crew will provide a communication module to the competing
+rover. This module is exclusively for the ARC crew's use to relay instructions to the rovers.
+Consequently, all mission directives will be transmitted via this module. Any movement made
+before receiving the assigned tasks for the next stage will result in a forced Remote Stop by the
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+39
+
+judge and, therefore, penalized. The rovers will operate without their own communication systems,
+requiring teams to detach any antennas from the rovers at the mission's onset. During the
+preparation time, the ARC judge will evaluate the rovers and may request teams to remove any
+system that resembles an antenna. In the preparation phase, teams are allowed to link their rovers
+to the Rover Satellite Communications Client Module (RSC-CM) using the RS-232 connection, as
+detailed in section 7.1.3.3.1. The RSC-CM operates using a unique message format named the
+Rover Satellite Communications Protocol (RSCP).
+7.1.3.3.1 Rover Satellite Communications - Client Module (RSC-CM)
+The RSC-CM will be equipped with a 9-hole DB9 female socket and will use RS-232 communication
+protocol. It will operate at a baud rate of 115200 bps, have 1 stop bit, and will not use parity or
+additional stop bits. The RSC-CM module will employ the RSCP framing protocol for data
+transmission to and from the rovers. This protocol includes various message types, like
+"NavigateToGPS" and others. The RSC-CM module will operate independently without needing an
+external power source, as it will have its own internal power supply. It will weigh less than 1kg and
+will be roughly the size of a credit card. For information on mounting, see 3.1.7 Rover Technical
+Check-in. For detailed information, please refer to the external documentation available in the
+GitHub repository.
+7.1.3.3.2 Message Format: Rover Satellite Communications Protocol (RSCP)
+RSCP is a specialized protocol designed for communication with rovers over a serial
+connection during the ARC mission. The RSCP protocol is crucial for coordinating and instructing
+the rover's actions throughout the mission. The RSCP protocol serves as the primary means of
+communication between the mission control center and the participating rover teams during the
+ARC challenge. It facilitates the transmission of mission directives, status updates, and control
+commands to the rovers, ensuring smooth mission execution.
+The detailed technical aspects, including the frame structure and Python/C++ code
+examples, will be available in the external documentation for reference. Teams are advised to refer
+to this documentation for a deeper understanding of the RSCP protocol's inner workings. Teams
+can access the documentation using the link on the ARC website along with the ARC Manual. This
+link will be forwarded to a GitHub repository. Teams must follow the updates in this repository until
+the date specified in section 2.3.1. Milestones, as this documentation, will also include crucial
+message timings, example communication flows and sequences, which will be mandatory for the
+execution of this mission.
+
+​
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+40
+
+7.1.4. Collaboration Mission
+Time Limit: 10 min mission + 5 min break cycles for 3 hours ​
+Mission Field: Moon
+
+7.1.4.1. Steps
+​
+
+SENSOR TASK (1 rover only)
+1.​ Navigate to the sensors ​
+Rovers start the mission near the base and reach their assigned “Sensor Zone”.
+2.​ Transport the Recorder​
+Disconnect the cables from the data recorder unit at the Sensor Zone, then deliver
+the device to the base. The recorder has a carry handle and uses a USB type-A
+connector.
+3.​ Collect Sensors​
+Gather the disconnected sensors from Sensor Zone and deliver them to the base.
+Sensors are partially buried in the ground.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+41
+
+INFRASTRUCTURE TASK (2 rovers only)
+4.​ Reset the instrument panels.​
+An instrument panel is located in the Panel-Zone. The panel has a display on the
+front and numeric keypad buttons on the back. A pin code for a factory reset is
+displayed, enter the correct pin to reset the panel. Multiple pin code entries will be
+required.
+5.​ Disassemble and change the damaged pipe with the correct one.
+The damaged pipe must be distinguished by rovers, and the damaged pipe should
+be removed from the line. There will be different coloured spare pipes. The pipeline
+has its own color and the new pipe must be chosen to preserve the original color
+sequence of the pipeline.
+SOLAR PANEL TASK (2 rovers only)
+6.​ Clean the solar panel.
+The main objective is to remove regolith dust from the surface of the solar panel by
+a cleaning tool. The cleaning tool is moved from one side to the other side of the
+solar panel. Top and bottom should be moved in alignment, otherwise, it cannot be
+moved properly.
+7.​ Align the mirror.
+Laser Dust Particle Counter Experiment that consist of adjustable mirror and a
+laser light source is located in the mirror zone. The mirror can be rotated in the
+elevation axis with a handle. Once the mirror reaches the correct position, the laser
+light will be reflected onto the measurement surface. The mirror must be secured
+in that position with a pivot clamp which works for locking the handle. If the laser is
+visually observed on the measurement surface, the mission will be considered
+successful.
+YAGI ANTENNA TASK (2 rovers only)
+8.​ Mount Yagi antenna.
+The Yagi antenna and securing pins should be gathered from the airlock, and
+transported to the hill. During installation, the corresponding opposing holes must
+match correctly. Then pins should be pushed into position until the Yagi antenna is
+securely mounted.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+42
+
+LAVA TUBE CLEARANCE TASK (2 rovers only)
+9.​ Clear the Lava Tube.​
+An antenna is blocking the lava tube. Rovers must remove the antenna and carry it
+outside; dragging and touching the ground is prohibited, as lunar regolith is
+abrasive and can penetrate mechanisms. Teams lift the antenna to the proper
+height so that the wooden block in the bottom of the antenna will not touch the
+ground. The total score for this step can only be gathered, if the antenna will not
+be dragged. In case of dragging, half of the step score will be deducted.
+
+7.1.4.2. Scores
+No
+
+Parameter
+
+Detailed Explanation
+
+Step Score
+
+1
+
+Navigate to the sensor area
+
+Reach the assigned Sensor-Zone.
+
+5
+
+2
+
+Transport the recorder
+
+3
+
+Collect sensors
+
+4
+
+Reset the panels
+
+Deliver the recorder to the base without
+any cables.
+Bring all the sensors to the base.
+The instrument resets after entering the
+force reset code.
+
+Disassemble and change
+
+Remove the damaged pipe and replace it
+
+the damaged pipe
+
+with the correct-colored one.
+
+6
+
+Clean the panel surface
+
+Cleaning tool will be slid on the panel
+
+7
+
+Rotate the mirror
+
+8
+
+Mounting a yagi antenna
+
+5
+
+Align the mirror correctly and fix to
+position.
+Mount Yagi antenna securely using the
+shafts.
+
+5
+5
+10
+10
+
+10
+
+10
+15
+
+Clear the lava tube by removing the
+9
+
+Clear the lava tube
+
+obstacle by carrying. Dragging results
+
+15
+
+step score to be halved.
+10
+
+Presentation Score
+
+Technical Collaboration Presentation
+score of the team
+TOTAL
+
+The ARC Committee, 2026. All rights reserved ©
+
+15
+100
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+43
+
+7.1.4.3. Details
+1.​ Teams will set their ground stations to a vantage point that views the field. The mission
+commander will be in touch with team leaders during the mission.
+2.​ During the whole Collaboration Mission, teams will operate in 10 min. mission-time
+intervals and have 5 min. break-time in between. Mission time and break time will be
+managed and announced by the Mission Commander. All task stations will be reset during
+the break, so teams cannot continue but start over each Mission time. However, for the
+“Sensor Task” the task steps will not be resetted during break-time. Teams can retry as
+many times as they need, with any partner as well.
+3.​ Each break-time, mission commanders will meet with team leaders to decide on next steps
+that teams will perform. Each step will have a spot that is assigned to a group before
+mission time begins. There is a limited number of spots, so teams are encouraged to
+choose their requested step. Teams start from the parking point for each mission time and
+go back to the parking area at breaks. Teams can choose spots regarding their return order
+to the parking area, therefore early return is encouraged.
+4.​ Groups can be formed dynamically during breaks, so teams can change partners for the
+next task.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+44
+
+7.2. Off-field Missions
+7.2.1. Challenge to Shine
+Time limit: 10 minutes with each judge
+This challenge is a presentation challenge of the ideal rover design of the team to experts
+in their fields. The presentations made in this challenge are evaluated separately and will not be
+included in the general challenge score. The fields of the experts are science, autonomous driving
+and control, robotic arms, driving in difficult terrain, team structure, etc. Team members will have 10
+minutes to present their approach to the stated fields during this challenging process to the
+judges in different rooms. The presentations will be evaluated, and the judges will choose the
+winner of each field. Prizes will be given to the winning teams. Each field can only have one winner.
+
+7.2.2. Fun Challenges
+During challenge days, there will be fun activities that are not a part of the ARC missions.
+These challenges are a set of games and mostly require rover-teammate and multi-rover
+interaction. All of the winners will get special awards. The ARC Committee has the right to make
+changes to fun challenges until the competition day. They are planned to be held on the last day of
+the competition.
+
+7.2.2.1. Rover's Mystery Canvas
+Step into Rover's Mystery Canvas, where every stroke holds a surprise waiting to be
+discovered. Rovers will use the given paints to uncover the unknown and create memorable
+memories.
+
+7.2.2.2. Victoria's Rover
+Teams decorate their rovers with clothes and accessories of their design using the
+materials we provide. Rover takes a tour of the runway. Traditional clothing is encouraged.
+
+7.2.2.3. Disco Rover
+Teams will play their chosen song and dance their Rovers to specific Rover dance figures.
+The team that executes the best figures wins the Rover game.
+
+7.2.2.4. Rover Jenga
+Rovers and, optionally, teammates will play with Rover-sized Jenga pieces. It can also be
+played by the participants optionally. They should be careful and precise so as not to drop the
+blocks.
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+45
+
+7.2.2.5. Tug of Challenge
+Two teams play tug-of-war, with only team members or only rovers. Rovers can pull the
+rope tied to win the challenge.
+
+8. Technical Drawings
+All measurements are given in millimetres.
+
+8.1 Emergency Kit - Night Mission
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+8.2 Toolbox - Night Mission
+
+8.3 Repair Tool - Night Mission
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+​
+
+46
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+8.4 Oxygen Tank - Night Mission
+
+8.5 Antenna - Autonomous Mission
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+​
+
+47
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+8.6 Recorder - Collaboration Mission
+
+8.7 Sensors - Collaboration Mission
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+​
+
+48
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+8.8 Panel - Collaboration Mission
+
+8.9 Pipe - Collaboration Mission
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+​
+
+49
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+8.10 Solar Panel- Collaboration Mission
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+​
+
+50
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+8.11 Mirror Mechanism​
+
+8.12 Yagi Antenna - Collaboration Mission
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+​
+
+51
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+​
+
+52
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+8.13 Dish Antenna - Collaboration Mission
+
+The ARC Committee, 2026. All rights reserved ©
+
+​
+
+​
+
+53
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+54
+
+8.14 Marker
+All the markers are of the size 20x20 cm.
+
+1.M1​ ​
+
+2. M2
+
+The marker placed on the right and left
+
+The marker placed on the right and left hand
+
+hand side of the Airlock
+
+side of the entrance and exit of the lava tube
+
+8.15 RSCP Module
+1. Technical Drawing
+
+2. 3D Model
+
+The ARC Committee, 2026. All rights reserved ©
+
+ARC’26 Manual v.3​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+55
+
+9. Evaluation
+The challenge scores are stated in the tables in the relevant mission section. Science
+Mission, Night Mission and Collaboration Mission is worth 100 points, and Autonomous Mission is
+worth 200 points, all missions sum up to 500 points in total. The top three teams with the
+maximum overall points will be selected as winners and awarded, respectively. In addition to
+mission points, there are general scoring rules for all missions, as stated in the table below.
+No
+
+General Scoring Rules
+
+1
+
+Teams can make a maximum of 3 interventions. (limitless in Collaboration Mission)
+
+2
+3
+4
+
+One intervention deducts 15% of the mission score. (no deduction in Collaboration
+Mission)
+Two interventions deduct 40% of the mission score. (no deduction in Collaboration
+Mission)
+Three interventions deduct 70% of the mission score. (no deduction in Collaboration
+Mission)
+
+5
+
+Pressing the emergency button is considered an intervention.
+
+6
+
+Judges can invoke an intervention in case of a security problem or going off-field.
+
+7
+
+During skipping, touching other than moving counts as an intervention during skipping.
+
+8
+
+Mission time will continue during Skipping or Intervention.
+
+9
+
+Not turning on the activity light deducts 10% of the mission score.
+
+10
+11
+
+If a rover cannot exit/enter the airlock, it can start from outside of the airlock for a 30%
+penalty.
+Causing any damage to the placed items on the field deducts 10% of the mission score.
+
+The ARC Committee, 2026. All rights reserved ©
+
+

@@ -47,7 +47,7 @@ class AutonomousMissionController(Node):
         self.odom_sub = self.create_subscription(Odometry, '/odometry/filtered_map', self.odom_callback, 10)
         
         # GPS Subscriber for geographical navigation
-        self.gps_sub = self.create_subscription(NavSatFix, '/gps/fix', self.gps_callback, 10)
+        self.gps_sub = self.create_subscription(NavSatFix, '/fix', self.gps_callback, 10)
         
         # Depth Subscriber for Tunnel Navigation
         self.depth_sub = self.create_subscription(Image, '/zed/zed_node/depth/depth_registered', self.depth_callback, 10)
@@ -66,6 +66,7 @@ class AutonomousMissionController(Node):
         self.current_lon = None
         
         self.current_state = 'WAITING_FOR_SERVER'
+        self.paused_state = None
         self.mission_stage = 0
         self.target_nav_lat = 0.0
         self.target_nav_lon = 0.0
@@ -162,6 +163,16 @@ class AutonomousMissionController(Node):
                 
                 rock_lat = self.current_lat + delta_lat
                 rock_lon = self.current_lon + delta_lon
+                
+                # Hakemin verdiği yarıçapın içinde mi kontrol et
+                # if hasattr(self, 'target_nav_lat') and hasattr(self, 'target_nav_lon') and hasattr(self, 'search_radius'):
+                #     dist_x = (rock_lon - self.target_nav_lon) * 111139.0 * math.cos(math.radians(self.target_nav_lat))
+                #     dist_y = (rock_lat - self.target_nav_lat) * 111139.0
+                #     dist_from_center = math.sqrt(dist_x**2 + dist_y**2)
+                #     
+                #     if dist_from_center > self.search_radius:
+                #         # self.get_logger().debug(f"Kaya tespit edildi ama arama alanının dışında! (Mesafe: {dist_from_center:.1f}m, İzin verilen: {self.search_radius}m). Yoksayılıyor.")
+                #         return
                 
                 self.detected_rocks.append({
                     'lat': rock_lat,
@@ -263,7 +274,8 @@ class AutonomousMissionController(Node):
     def gps_to_local(self, target_lat, target_lon):
         if self.origin_lat is None:
             self.get_logger().warn("GPS Orijini henüz alınmadı! Koordinat harita orijinine (0,0) göre varsayılıyor.")
-            return (target_lat - 39.0) * 111000.0, (target_lon - 32.0) * 111000.0
+            # X = East (Longitude), Y = North (Latitude)
+            return (target_lon - 32.0) * 111000.0, (target_lat - 39.0) * 111000.0
             
         # WGS-84 elipsoid parametreleri (Dünya standart GPS referansı)
         a = 6378137.0           # Ekvatoral yarıçap (metre)
@@ -395,8 +407,38 @@ class AutonomousMissionController(Node):
                 armed = task.get('arm', False)
                 if armed:
                     self.get_logger().info("Rover ARM edildi — Otonom mod aktif!")
+                    if self.paused_state is not None and self.paused_state not in ['DONE', 'WAITING_FOR_SERVER']:
+                        self.get_logger().info(f"Önceki göreve ({self.paused_state}) kaldığı yerden devam ediliyor!")
+                        self.current_state = self.paused_state
+                        
+                        # Eğer navigasyon sırasında durdurulduysa, rotayı yeniden çizip hedefe devam et
+                        if self.current_state in ['WAIT_NAV_ACCEPT', 'WAIT_NAV_RESULT']:
+                            self.get_logger().info("Yarım kalan Nav2 hedefine (rotaya) tekrar yola çıkılıyor...")
+                            self.send_nav_goal(self.current_nav_x, self.current_nav_y)
+                            self.current_state = 'WAIT_NAV_ACCEPT'
+                            
+                        self.paused_state = None
                 else:
-                    self.get_logger().info("Rover DISARM edildi — Görev bitti.")
+                    self.get_logger().info("Rover DISARM edildi — Acil Durdurma!")
+                    
+                    # Motorları durdurmadan hemen önce mevcut durumu hafızaya al (zaten durmamışsa)
+                    if self.current_state not in ['DONE', 'WAITING_FOR_SERVER']:
+                        self.paused_state = self.current_state
+                        
+                    # Motorları durdur
+                    stop_twist = Twist()
+                    self.cmd_vel_pub.publish(stop_twist)
+                    # Dönme modunu kapat
+                    mode_msg = String()
+                    mode_msg.data = "NAV"
+                    self.mode_pub.publish(mode_msg)
+                    # Aktif Nav2 hedefini iptal et
+                    if hasattr(self, 'nav_future') and self.nav_future is not None and self.nav_future.done():
+                        try:
+                            self.nav_future.result().cancel_goal_async()
+                            self.get_logger().info("Nav2 hedefi iptal edildi.")
+                        except Exception as e:
+                            self.get_logger().warn(f"Nav2 iptal hatası: {e}")
                     self.current_state = 'DONE'
                     
             elif msg_type == 'navigate_to_gps':
@@ -436,7 +478,7 @@ class AutonomousMissionController(Node):
                 self.get_logger().info(f"Arama alanı alındı: ({lat}, {lon}), r={radius}m")
                 
                 if self.mission_stage == 1:
-                    self.current_state = 'MOVE_OUT_AIRLOCK'
+                    self.current_state = 'REACH_ANTENNA_AREA'
                 elif self.mission_stage == 2:
                     self.current_state = 'REACH_CRATER'
                 
@@ -508,12 +550,6 @@ class AutonomousMissionController(Node):
                     self.send_task_complete_after_nav = False
                 self.current_state = getattr(self, 'next_state_after_nav', 'WAITING_FOR_SERVER')
 
-        elif self.current_state == 'MOVE_OUT_AIRLOCK':
-            self.get_logger().info("Step 2: Moving out of airlock...")
-            self.send_gps_goal(*self.gps_coords['airlock_exit'])
-            self.next_state_after_nav = 'REACH_ANTENNA_AREA'
-            self.current_state = 'WAIT_NAV_ACCEPT'
-            
         elif self.current_state == 'REACH_ANTENNA_AREA':
             self.get_logger().info("Step 3: Reaching Antenna Area...")
             self.send_gps_goal(self.target_nav_lat, self.target_nav_lon)
@@ -671,6 +707,7 @@ class AutonomousMissionController(Node):
                         self.publish_spin_cmd(activate=False)
                         self.tube_start_x = self.current_odom_x
                         self.tube_start_y = self.current_odom_y
+                        self.aruco_detected = False
                         self.current_state = 'MEASURE_ROOF'
                         self.wait_counter = 0
             
@@ -727,7 +764,8 @@ class AutonomousMissionController(Node):
         elif self.current_state == 'RETURN_AIRLOCK':
             self.get_logger().info("Step 12 & 13: Returning to Airlock...")
             self.send_gps_goal(self.target_nav_lat, self.target_nav_lon)
-            self.send_task_complete_after_nav = False
+            # RSCP GitHub dokümantasyonuna göre TaskCompleted navigasyon bitince yollanmalı
+            self.send_task_complete_after_nav = True
             self.next_state_after_nav = 'SEARCH_AIRLOCK_ARUCO'
             self.aruco_detected = False
             self.current_state = 'WAIT_NAV_ACCEPT'
@@ -781,10 +819,9 @@ class AutonomousMissionController(Node):
                 self.cmd_vel_pub.publish(twist)
                 
                 if self.wait_counter <= 0:
-                    self.get_logger().info("Airlock'a girildi! Görev tamamlandı.")
+                    self.get_logger().info("Airlock'a girildi! Görev tamamlandı, sunucudan DISARM bekleniyor...")
                     twist.linear.x = 0.0
                     self.cmd_vel_pub.publish(twist)
-                    self.send_rscp_task_complete()
                     self.current_state = 'WAITING_FOR_SERVER'
                     self.wait_counter = 0
             

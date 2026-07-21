@@ -11,7 +11,6 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Point
 from std_msgs.msg import Float32MultiArray
-from ultralytics import YOLO
 
 class VisionPerceptionNode(Node):
     def __init__(self):
@@ -39,20 +38,11 @@ class VisionPerceptionNode(Node):
         self.rock_pub = self.create_publisher(Float32MultiArray, '/vision/ilmenite_rock_position', 10)
         self.annotated_pub = self.create_publisher(Image, '/vision/annotated_image', 10)
         
-        # ArUco Dictionary
-        self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
+        # ArUco Dictionary (ARC resmi örneğine göre DICT_ARUCO_ORIGINAL kullanılmalı)
+        self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
         self.aruco_params = cv2.aruco.DetectorParameters()
         self.aruco_detector = cv2.aruco.ArucoDetector(self.aruco_dict, self.aruco_params)
         
-        # YOLOv8 Model (Yeni eğitilen best.pt modeli)
-        try:
-            package_share_directory = get_package_share_directory('robot_2_gps_description')
-            model_path = os.path.join(package_share_directory, 'best.pt')
-            self.yolo_model = YOLO(model_path)
-            self.get_logger().info(f"YOLOv8 model loaded successfully from {model_path}.")
-        except Exception as e:
-            self.get_logger().error(f"Failed to load YOLO model: {e}")
-            self.yolo_model = None
         self.get_logger().info("Vision Perception Node initialized.")
 
     def depth_callback(self, msg):
@@ -108,106 +98,97 @@ class VisionPerceptionNode(Node):
             self.aruco_pub.publish(pt)
 
     def detect_ilmenite_rock(self, cv_image):
-        if self.yolo_model is None:
-            return
-            
-        # Run YOLO inference
-        results = self.yolo_model(cv_image, verbose=False)
+        # 1. Görüntüyü HSV formatına çevir
+        hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
         
-        # Parse results
-        for result in results:
-            boxes = result.boxes
-            for box in boxes:
-                # Bounding box coordinates
-                x1, y1, x2, y2 = box.xyxy[0].cpu().numpy().astype(int)
-                conf = float(box.conf[0])
-                cls = int(box.cls[0])
-                class_name = self.yolo_model.names[cls]
+        # 2. İlmenit kayaları genelde çok koyu (siyah/gri) tonlardadır.
+        # Bu yüzden düşük Doygunluk (Saturation) ve düşük Parlaklık (Value) olan yerleri maskeliyoruz.
+        lower_black = np.array([0, 0, 0])
+        upper_black = np.array([180, 100, 80]) # Çok açık olmayan ve çok renkli olmayan yerler
+        
+        mask = cv2.inRange(hsv, lower_black, upper_black)
+        
+        # 3. Gürültü (ufak lekeler) temizliği
+        kernel = np.ones((5, 5), np.uint8)
+        mask = cv2.erode(mask, kernel, iterations=1)
+        mask = cv2.dilate(mask, kernel, iterations=2)
+        
+        # 4. Konturları bul (Koyu bölgelerin sınırlarını çiz)
+        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        # Her bir potansiyel koyu bölgeyi analiz et
+        for cnt in contours:
+            area = cv2.contourArea(cnt)
+            
+            # Boyut filtresi: Çok küçük toz parçalarını veya koca dağ gölgelerini atla
+            if area < 500 or area > 50000:
+                continue
                 
-                if conf > 0.65:
-                    # Kayanın sadece bulunduğu bölgeyi (Bounding Box) kes
-                    rock_roi = cv_image[y1:y2, x1:x2]
-                    
-                    if rock_roi.size == 0:
-                        continue
+            # Koyu bölgenin çevresine dikdörtgen Bounding Box çiz
+            x, y, w, h = cv2.boundingRect(cnt)
+            x1, y1, x2, y2 = x, y, x + w, y + h
+            rock_roi = cv_image[y1:y2, x1:x2]
+            
+            if rock_roi.size == 0:
+                continue
+                
+            # --- FİZİKSEL DOĞRULAMA (Eski yazdığınız mantık) ---
+            hsv_roi = cv2.cvtColor(rock_roi, cv2.COLOR_BGR2HSV)
+            mean_val = np.mean(hsv_roi[:, :, 2])
+            mean_sat = np.mean(hsv_roi[:, :, 1])
+            max_val = np.max(hsv_roi[:, :, 2]) # Güneş yansıması
+            
+            gray_roi = cv2.cvtColor(rock_roi, cv2.COLOR_BGR2GRAY)
+            laplacian_var = cv2.Laplacian(gray_roi, cv2.CV_64F).var()
+            
+            is_ilmenite = True
+            
+            # Mat, dümdüz siyah gölgeleri elemek için en parlak nokta kuralı (İlmenitte kristal yapı parlar)
+            if max_val < 100:  # Önceden 150 idi, OpenCV ile maske biraz farklı kırpabilir, güvenli aralık 100
+                is_ilmenite = False 
+                
+            # Doku testi (Gölgeler genelde çok pürüzsüzdür, kayalar pürüzlü)
+            if laplacian_var < 50 or laplacian_var > 1000:
+                is_ilmenite = False 
+                
+            if is_ilmenite:
+                # Yeşil kutu - Onaylı İlmenit!
+                cv2.rectangle(cv_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                
+                cx = x + w // 2
+                cy = y + h // 2
+                
+                # Derinlik Hesabı
+                depth_val = 0.0
+                if self.latest_depth_image is not None:
+                    try:
+                        val = self.latest_depth_image[cy, cx]
+                        if np.isnan(val) or val == 0:
+                            window = self.latest_depth_image[max(0, cy-5):cy+5, max(0, cx-5):cx+5]
+                            valid_depths = window[(~np.isnan(window)) & (window > 0)]
+                            if len(valid_depths) > 0:
+                                val = np.nanmean(valid_depths)
+                            else:
+                                val = 0.0
                         
-                    # 1. Renk Analizi (Siyah/Gri kontrolü)
-                    hsv = cv2.cvtColor(rock_roi, cv2.COLOR_BGR2HSV)
-                    mean_val = np.mean(hsv[:, :, 2]) # Ortalama parlaklık (Value)
-                    mean_sat = np.mean(hsv[:, :, 1]) # Ortalama doygunluk (Saturation)
-                    
-                    # 2. Parlaklık Analizi (Mat değil, parlak noktaları var)
-                    max_val = np.max(hsv[:, :, 2]) # Kutu içindeki en parlak nokta
-                    
-                    # 3. Doku Analizi (Tanecikli yapı -> Laplacian varyansı)
-                    gray = cv2.cvtColor(rock_roi, cv2.COLOR_BGR2GRAY)
-                    laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
-                    
-                    is_ilmenite = True
-                    
-                    # İlmenit kapkaradır: Ortalama parlaklık (Value) 80'den, Doygunluk 80'den küçük olmalı. (Çantalar genelde daha açık renklidir)
-                    if mean_val > 80 or mean_sat > 80:
-                        is_ilmenite = False 
-                    
-                    # Mat kutuları elemek için en parlak nokta (güneş yansıması) 150'den büyük olmalı
-                    if max_val < 150:
-                        is_ilmenite = False 
-                        
-                    if laplacian_var < 100:
-                        is_ilmenite = False 
-                        
-                    if laplacian_var > 800:
-                        is_ilmenite = False
-                        
-                    if class_name not in ['Igneous_Basalt', 'Sedimentary_coal']:
-                        is_ilmenite = False
-                        
-                    # Eğer tüm bu fiziksel testleri geçerse, evet bu bir ilmenittir!
-                    if is_ilmenite:
-                        # Draw bounding box (Yeşil - Onaylandı)
-                        cv2.rectangle(cv_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                        
-                        # Center point
-                        cx = int((x1 + x2) / 2)
-                        cy = int((y1 + y2) / 2)
-                        
-                        # Calculate depth
-                        depth_val = 0.0
-                        if self.latest_depth_image is not None:
-                            try:
-                                val = self.latest_depth_image[cy, cx]
-                                if np.isnan(val) or val == 0:
-                                    # Fallback to small window
-                                    window = self.latest_depth_image[max(0, cy-5):cy+5, max(0, cx-5):cx+5]
-                                    valid_depths = window[(~np.isnan(window)) & (window > 0)]
-                                    if len(valid_depths) > 0:
-                                        val = np.nanmean(valid_depths)
-                                    else:
-                                        val = 0.0
-                                
-                                # Convert to meters if uint16 (mm)
-                                if self.latest_depth_image.dtype == np.uint16:
-                                    depth_val = float(val) / 1000.0
-                                else:
-                                    depth_val = float(val)
-                            except IndexError:
-                                pass
-                        
-                        # X, Y koordinatları, derinlik ve güven skorunu birlikte gönderiyoruz
-                        msg_arr = Float32MultiArray()
-                        msg_arr.data = [float(cx), float(cy), float(depth_val), float(conf)]
-                        self.rock_pub.publish(msg_arr)
-                        
-                        # Cisim merkezine nokta ve yazi koy
-                        cv2.circle(cv_image, (cx, cy), 5, (0, 0, 255), -1)
-                        # HATA AYIKLAMA: Ekrana Sınıf Adını, Varyans (V) ve Parlaklık (M) değerlerini yazdırıyoruz
-                        label = f"ILM {class_name[:6]} V:{laplacian_var:.0f} M:{mean_val:.0f}"
-                        cv2.putText(cv_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                    else:
-                        # Kırmızı kutu - Kaya bulundu ama İlmenit değil
-                        cv2.rectangle(cv_image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-                        label = f"REJ {class_name[:6]} V:{laplacian_var:.0f} M:{mean_val:.0f}"
-                        cv2.putText(cv_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+                        if self.latest_depth_image.dtype == np.uint16:
+                            depth_val = float(val) / 1000.0
+                        else:
+                            depth_val = float(val)
+                    except IndexError:
+                        pass
+                
+                msg_arr = Float32MultiArray()
+                msg_arr.data = [float(cx), float(cy), float(depth_val), 1.0]
+                self.rock_pub.publish(msg_arr)
+                
+                cv2.circle(cv_image, (cx, cy), 5, (0, 0, 255), -1)
+                label = f"ILM-CV V:{laplacian_var:.0f} M:{mean_val:.0f}"
+                cv2.putText(cv_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            else:
+                cv2.rectangle(cv_image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                label = f"REJ-CV V:{laplacian_var:.0f} M:{mean_val:.0f}"
+                cv2.putText(cv_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
 def main(args=None):
     rclpy.init(args=args)

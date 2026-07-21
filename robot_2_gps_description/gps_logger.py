@@ -1,105 +1,165 @@
 #!/usr/bin/env python3
+import math
+
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import NavSatFix
-from sensor_msgs.msg import NavSatStatus
+from sensor_msgs.msg import NavSatFix, NavSatStatus
+
 import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 class GpsPublisher(Node):
+
     def __init__(self):
         super().__init__('gps_publisher')
-        # Changed topic to /gps/fix to match navsat_transform_node expectations
-        self.pub = self.create_publisher(NavSatFix, '/gps/fix', 10)
-        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-        timer_period = 1.0  # seconds
-        self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.HOST     = "10.42.0.20"
-        self.USER     = "meturover"
-        self.PASSWORD = "meturoverchallenger1_"
-        self.uere = 5.0
-        self.get_logger().info("GPS Publisher (Robust Version) Baslatildi...")
+
+        self.declare_parameter('host', '10.42.0.65')
+        self.declare_parameter('username', 'meturover')
+        self.declare_parameter('password', 'meturoverchallenger1_')
+        self.declare_parameter('uere', 5.0)
+        self.declare_parameter('rate_hz', 1.0)
+
+        self.host = self.get_parameter('host').value
+        self.username = self.get_parameter('username').value
+        self.password = self.get_parameter('password').value
+        self.uere = float(self.get_parameter('uere').value)
+
+        self.pub = self.create_publisher(NavSatFix, 'fix', 10)
+
+        # One persistent session: keeps the TCP connection + auth cookie alive
+        # instead of re-authenticating on every single poll.
+        self.session = requests.Session()
+        self.session.verify = False
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0',
+            'Accept': 'application/json',
+        })
+        self.authenticated = False
+
+        rate = float(self.get_parameter('rate_hz').value)
+        self.timer = self.create_timer(1.0 / rate, self.timer_callback)
+
+    # ------------------------------------------------------------------ #
 
     def timer_callback(self):
-        # Güvenlik Kalkanı (Try-Except) eklendi
-        try:
-            gps = self.get_prism_gps(self.HOST, self.USER, self.PASSWORD)
-        except Exception as e:
-            # Hata verip çökmek yerine uyarı verir ve bir sonraki turu bekler
-            self.get_logger().warn(f"GPS Baglantisi Aranıyor... (Cihaz Kapalı Olabilir)", throttle_duration_sec=2.0)
-            return
-
         msg = NavSatFix()
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.header.frame_id = 'gps_link'
-
-        dop = float(gps['horizontal_dilution'])
-        sigma = dop * self.uere     # e.g. 2.94 × 5 m ≃ 14.7 m
-        var   = sigma * sigma
-
-        # Status: status/status_service (set to STATUS_FIX and SERVICE_GPS)
-        msg.status.status = NavSatStatus.STATUS_FIX
         msg.status.service = NavSatStatus.SERVICE_GPS
 
-        # Fill in the fix
-        msg.latitude = float(gps['latitude'])
-        msg.longitude = float(gps['longitude'])
-        msg.altitude = float(gps['altitude_m'])
+        try:
+            gps = self.get_prism_gps()
+        except Exception as e:
+            # Radio unreachable, auth failed, JSON malformed, etc.
+            # Do NOT crash the node -- publish a NO_FIX message instead.
+            self.authenticated = False  # force re-login on next attempt
+            self.get_logger().warn(
+                f'GPS read failed: {e}',
+                throttle_duration_sec=5.0,
+            )
+            self.publish_no_fix(msg)
+            return
 
+        # The radio answered, but the receiver itself may have no fix.
+        # In that state lat/lon/dop are often missing, None, or garbage.
+        if not gps.get('fix_acquired') or gps.get('latitude') is None:
+            self.get_logger().warn(
+                f"No GPS fix (satellites={gps.get('satellites', '?')})",
+                throttle_duration_sec=5.0,
+            )
+            self.publish_no_fix(msg)
+            return
+
+        try:
+            lat = float(gps['latitude'])
+            lon = float(gps['longitude'])
+            alt = float(gps['altitude_m'] or 0.0)
+            dop = float(gps['horizontal_dilution'] or 99.9)
+        except (TypeError, ValueError) as e:
+            self.get_logger().warn(
+                f'Bad GPS values from radio: {e}',
+                throttle_duration_sec=5.0,
+            )
+            self.publish_no_fix(msg)
+            return
+
+        sigma = dop * self.uere
+        var = sigma * sigma
+
+        msg.status.status = NavSatStatus.STATUS_FIX
+        msg.latitude = lat
+        msg.longitude = lon
+        msg.altitude = alt
         msg.position_covariance = [
             var, 0.0, 0.0,
             0.0, var, 0.0,
-            0.0, 0.0, var
+            0.0, 0.0, var,
         ]
-        
         msg.position_covariance_type = NavSatFix.COVARIANCE_TYPE_APPROXIMATED
 
         self.pub.publish(msg)
         self.get_logger().info(
-            f'Publishing GPS fix: '
-            f'lat={msg.latitude:.6f}, lon={msg.longitude:.6f}, alt={msg.altitude:.1f}'
+            f'lat={lat:.6f}, lon={lon:.6f}, alt={alt:.1f}, '
+            f"sats={gps.get('satellites')}, hdop={dop:.2f}",
+            throttle_duration_sec=1.0,
         )
 
-    def get_prism_gps(self, host, username, password):
-        """
-        Logs into a Rocket Prism AC, then fetches /status.cgi JSON and returns the 'gps' block.
-        """
-        login_url   = f"https://{host}/api/auth"
-        status_url  = f"https://{host}/status.cgi"
-        session = requests.Session()
-        session.verify = False  # skip cert check
-        session.headers.update({
-            "User-Agent": "Mozilla/5.0",
-            "Accept":       "application/json",
-        })
+    def publish_no_fix(self, msg: NavSatFix):
+        """Publish a NavSatFix marked STATUS_NO_FIX so downstream nodes
+        (robot_localization, navsat_transform, etc.) know the GPS is out
+        instead of the topic silently going dead."""
+        msg.status.status = NavSatStatus.STATUS_NO_FIX
+        msg.latitude = math.nan
+        msg.longitude = math.nan
+        msg.altitude = math.nan
+        msg.position_covariance = [0.0] * 9
+        msg.position_covariance_type = NavSatFix.COVARIANCE_TYPE_UNKNOWN
+        self.pub.publish(msg)
 
-        # 2) Authenticate and establish session cookie
-        r = session.post(
-            login_url,
-            data={"username": username, "password": password},
-            timeout=2.0 # Daha kısa timeout çabuk kurtulması için
+    # ------------------------------------------------------------------ #
+
+    def login(self):
+        r = self.session.post(
+            f'https://{self.host}/api/auth',
+            data={'username': self.username, 'password': self.password},
+            timeout=(2.0, 3.0),  # (connect, read) timeouts
         )
         r.raise_for_status()
+        self.authenticated = True
 
-        # 3) Fetch the JSON status
-        r = session.get(status_url, timeout=2.0)
+    def get_prism_gps(self):
+        """Fetch /status.cgi from the Rocket Prism and return its 'gps' block.
+        Reuses the existing session/cookie; re-authenticates only when needed."""
+        if not self.authenticated:
+            self.login()
+
+        r = self.session.get(f'https://{self.host}/status.cgi', timeout=(2.0, 3.0))
+
+        # Session cookie expired -> log in once and retry once.
+        if r.status_code in (401, 403):
+            self.login()
+            r = self.session.get(f'https://{self.host}/status.cgi', timeout=(2.0, 3.0))
+
         r.raise_for_status()
         data = r.json()
 
-        # 4) Extract GPS block
-        gps = data.get("gps")
+        gps = data.get('gps')
         if not gps:
-            raise ValueError("No 'gps' section in JSON response")
+            raise ValueError("no 'gps' section in status.cgi response")
 
         return {
-            "latitude":           gps["lat"],
-            "longitude":          gps["lon"],
-            "fix_acquired":       bool(gps["fix"]),
-            "satellites":         gps["sats"],
-            "horizontal_dilution":gps["dop"],
-            "altitude_m":         gps["alt"],
-            "last_sync":          gps["last_sync"],
+            'latitude': gps.get('lat'),
+            'longitude': gps.get('lon'),
+            'fix_acquired': bool(gps.get('fix')),
+            'satellites': gps.get('sats'),
+            'horizontal_dilution': gps.get('dop'),
+            'altitude_m': gps.get('alt'),
+            'last_sync': gps.get('last_sync'),
         }
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -111,6 +171,7 @@ def main(args=None):
     finally:
         node.destroy_node()
         rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

@@ -111,7 +111,7 @@
   <node pkg="robot_localization" exec="navsat_transform_node" name="navsat_transform">
     <param from="$(var ekf_config_path)" />
     <remap from="imu/data" to="/zed/zed_node/imu/data" />
-    <remap from="gps/fix" to="/gps/fix" />
+    <remap from="gps/fix" to="/fix" />
     <remap from="odometry/filtered" to="odometry/filtered_map" />
   </node>
 

@@ -47,7 +47,7 @@ class AutonomousMissionTest(Node):
         self.odom_sub = self.create_subscription(Odometry, '/odometry/filtered_map', self.odom_callback, 10)
         
         # GPS Subscriber for geographical navigation
-        self.gps_sub = self.create_subscription(NavSatFix, '/gps/fix', self.gps_callback, 10)
+        self.gps_sub = self.create_subscription(NavSatFix, '/fix', self.gps_callback, 10)
         
         # Depth Subscriber for Tunnel Navigation
         self.depth_sub = self.create_subscription(Image, '/zed/zed_node/depth/depth_registered', self.depth_callback, 10)
@@ -332,7 +332,21 @@ class AutonomousMissionTest(Node):
                 if armed:
                     self.get_logger().info("Rover ARM edildi — Otonom mod aktif!")
                 else:
-                    self.get_logger().info("Rover DISARM edildi — Görev bitti.")
+                    self.get_logger().info("Rover DISARM edildi — Acil Durdurma!")
+                    # Motorları durdur
+                    stop_twist = Twist()
+                    self.cmd_vel_pub.publish(stop_twist)
+                    # Dönme modunu kapat
+                    mode_msg = String()
+                    mode_msg.data = "NAV"
+                    self.mode_pub.publish(mode_msg)
+                    # Aktif Nav2 hedefini iptal et
+                    if hasattr(self, 'nav_future') and self.nav_future is not None and self.nav_future.done():
+                        try:
+                            self.nav_future.result().cancel_goal_async()
+                            self.get_logger().info("Nav2 hedefi iptal edildi.")
+                        except Exception as e:
+                            self.get_logger().warn(f"Nav2 iptal hatası: {e}")
                     self.current_state = 'DONE'
                     
             elif msg_type == 'navigate_to_gps':
@@ -372,7 +386,7 @@ class AutonomousMissionTest(Node):
                 self.get_logger().info(f"Arama alanı alındı: ({lat}, {lon}), r={radius}m")
                 
                 if self.mission_stage == 1:
-                    self.current_state = 'MOVE_OUT_AIRLOCK'
+                    self.current_state = 'REACH_ANTENNA_AREA'
                 elif self.mission_stage == 2:
                     self.current_state = 'REACH_CRATER'
                 
@@ -444,12 +458,6 @@ class AutonomousMissionTest(Node):
                     self.send_task_complete_after_nav = False
                 self.current_state = getattr(self, 'next_state_after_nav', 'WAITING_FOR_SERVER')
 
-        elif self.current_state == 'MOVE_OUT_AIRLOCK':
-            self.get_logger().info("Step 2: Moving out of airlock...")
-            self.send_gps_goal(*self.gps_coords['airlock_exit'])
-            self.next_state_after_nav = 'REACH_ANTENNA_AREA'
-            self.current_state = 'WAIT_NAV_ACCEPT'
-            
         elif self.current_state == 'REACH_ANTENNA_AREA':
             self.get_logger().info("Step 3: Reaching Antenna Area...")
             self.send_gps_goal(self.target_nav_lat, self.target_nav_lon)
@@ -607,6 +615,7 @@ class AutonomousMissionTest(Node):
                         self.publish_spin_cmd(activate=False)
                         self.tube_start_x = self.current_odom_x
                         self.tube_start_y = self.current_odom_y
+                        self.aruco_detected = False
                         self.current_state = 'MEASURE_ROOF'
                         self.wait_counter = 0
             
@@ -663,7 +672,8 @@ class AutonomousMissionTest(Node):
         elif self.current_state == 'RETURN_AIRLOCK':
             self.get_logger().info("Step 12 & 13: Returning to Airlock...")
             self.send_gps_goal(self.target_nav_lat, self.target_nav_lon)
-            self.send_task_complete_after_nav = False
+            # RSCP GitHub dokümantasyonuna göre TaskCompleted navigasyon bitince yollanmalı
+            self.send_task_complete_after_nav = True
             self.next_state_after_nav = 'SEARCH_AIRLOCK_ARUCO'
             self.aruco_detected = False
             self.current_state = 'WAIT_NAV_ACCEPT'
@@ -717,10 +727,9 @@ class AutonomousMissionTest(Node):
                 self.cmd_vel_pub.publish(twist)
                 
                 if self.wait_counter <= 0:
-                    self.get_logger().info("Airlock'a girildi! Görev tamamlandı.")
+                    self.get_logger().info("Airlock'a girildi! Görev tamamlandı, sunucudan DISARM bekleniyor...")
                     twist.linear.x = 0.0
                     self.cmd_vel_pub.publish(twist)
-                    self.send_rscp_task_complete()
                     self.current_state = 'WAITING_FOR_SERVER'
                     self.wait_counter = 0
             

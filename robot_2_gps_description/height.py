@@ -4,6 +4,7 @@ import rclpy
 from rclpy.node import Node
 from std_srvs.srv import Trigger
 from sensor_msgs.msg import PointCloud2
+from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from rclpy.qos import qos_profile_sensor_data
 import time
@@ -24,12 +25,35 @@ class PeakHeightCalculator(Node):
             qos_profile=qos_profile_sensor_data
         )
         
+        # Odometry subscriber — robotun anlık konumu ve yaw açısı (map frame)
+        self.odom_sub = self.create_subscription(
+            Odometry,
+            '/odometry/filtered_map',
+            self.odom_callback,
+            10
+        )
+        
         self.is_scanning = False
         self.max_height = -float('inf')  # En yüksek nokta (kamera frame: -Y)
         self.peak_x = 0.0
         self.peak_y = 0.0
         
+        # Robotun anlık konumu (map frame)
+        self.robot_x = 0.0
+        self.robot_y = 0.0
+        self.robot_yaw = 0.0
+        
         self.get_logger().info("Height Calculator (Peak Finder) initialized.")
+
+    def odom_callback(self, msg):
+        """Robotun anlık konumunu ve yaw açısını takip eder."""
+        self.robot_x = msg.pose.pose.position.x
+        self.robot_y = msg.pose.pose.position.y
+        
+        q = msg.pose.pose.orientation
+        siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
+        cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z)
+        self.robot_yaw = math.atan2(siny_cosp, cosy_cosp)
 
     def pc_callback(self, msg):
         if not self.is_scanning:
@@ -54,9 +78,17 @@ class PeakHeightCalculator(Node):
                 height = -y
                 if height > self.max_height:
                     self.max_height = height
-                    # Harita düzlemindeki konum: X (sağ) ve Z (ileri)
-                    self.peak_x = z   # Kameranın ilerisi = haritada X (ileri)
-                    self.peak_y = -x  # Kameranın sağı = haritada -Y (sol)
+                    
+                    # Kameraya göre yatay düzlemdeki konum (body frame)
+                    cam_forward = z    # Kameranın Z'si = robotun ilerisi
+                    cam_left = -x      # Kameranın -X'i = robotun solu
+                    
+                    # Body frame → Map frame dönüşümü
+                    # Robotun O ANKİ konumu ve yaw açısı kullanılarak
+                    # mutlak harita koordinatına çevriliyor
+                    yaw = self.robot_yaw
+                    self.peak_x = self.robot_x + cam_forward * math.cos(yaw) - cam_left * math.sin(yaw)
+                    self.peak_y = self.robot_y + cam_forward * math.sin(yaw) + cam_left * math.cos(yaw)
         except Exception as e:
             self.get_logger().error(f"Error parsing point cloud: {e}")
 
