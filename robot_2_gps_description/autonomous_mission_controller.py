@@ -245,17 +245,18 @@ class AutonomousMissionController(Node):
             # Orta kısımdaki yatay şeridi al (kamera açısına göre yer/gökyüzü parazitini önlemek için)
             strip = depth_image[h//2 - 20 : h//2 + 20, :]
             
-            # TAVAN (ÇATI) KONTROLÜ: Görüntünün üstte kalan 1/3'lük dilimine bak (Sadece 30 piksel değil, garantili)
-            roof_strip = depth_image[0 : h//3, :]
+            # TAVAN (ÇATI) KONTROLÜ: Görüntünün üstte kalan 1/3'lük dilimine bak. 
+            # Yandaki yüksek duvarları tavan sanmaması için bölgeyi daha da inceltip TAM ORTA (%20'lik kısım) alıyoruz.
+            roof_strip = depth_image[0 : h//3, w//2 - w//10 : w//2 + w//10]
             # Gökyüzü değilse (NaN, Inf değil) ve üstümüzdeki tavan 3.5 metreden yakınsa çatı say!
             roof_valid = roof_strip[(roof_strip > 0.0) & (roof_strip < 3.5) & (~self.np.isnan(roof_strip)) & (~self.np.isinf(roof_strip))]
             # Üstteki devasa bölgenin en az %2'sini kaplıyorsa çatının altındayız
             self.under_roof = len(roof_valid) > (roof_strip.size * 0.02)
             
-            # Sol ve sağ bölgeler (3'e böl, sol 1/3, sağ 1/3)
-            left_part = strip[:, :w//3]
-            center_part = strip[:, w//3 : 2*w//3]
-            right_part = strip[:, 2*w//3:]
+            # Sol, Orta ve Sağ bölgeleri daraltıyoruz (Dar tünel için)
+            left_part = strip[:, :w//3]       # Sol %33
+            right_part = strip[:, 2*w//3:]    # Sağ %33
+            center_part = strip[:, w//2 - w//8 : w//2 + w//8] # Sadece tam önümüz (orta %25) - Duvarları engel sanmasın
             
             left_valid = left_part[(left_part > 0) & (~self.np.isnan(left_part)) & (~self.np.isinf(left_part))]
             right_valid = right_part[(right_part > 0) & (~self.np.isnan(right_part)) & (~self.np.isinf(right_part))]
@@ -273,8 +274,8 @@ class AutonomousMissionController(Node):
             Kp = 0.5
             self.tunnel_angular_z = float(self.np.clip(Kp * error, -0.4, 0.4))
             
-            # Çarpışma önleyici
-            if center_dist < 0.6:
+            # Çarpışma önleyici (Eğimli ve dar yollar için mesafe 0.45'e düşürüldü)
+            if center_dist < 0.45:
                 self.tunnel_linear_x = 0.0 # Çok yakında engel var, dur
             else:
                 self.tunnel_linear_x = 0.25 # Normal hız
