@@ -50,6 +50,9 @@ class RSCPClient(Node):
         self.task_complete_sub = self.create_subscription(
             String, '/rscp/send_task_complete', self.send_task_complete_callback, 10
         )
+        self.status_sub = self.create_subscription(
+            String, '/rscp/send_status', self.send_status_callback, 10
+        )
         
         # Seri port bağlantısı
         self.ser = None
@@ -170,6 +173,35 @@ class RSCPClient(Node):
         response.task_finished.CopyFrom(rscp_protobuf.TaskFinished())
         self._send_response(response)
         self.get_logger().info("TaskFinished gönderildi.")
+
+    def send_status_callback(self, msg):
+        """RoverStatus mesajı gönderir (1Hz ile batarya, konum, durum)."""
+        try:
+            status_data = json.loads(msg.data)
+            response = rscp_protobuf.ResponseEnvelope()
+            
+            rover_status = rscp_protobuf.RoverStatus()
+            rover_status.state = status_data.get('state', 0)
+            
+            coord = status_data.get('coordinate', {})
+            rover_status.coordinate.latitude = coord.get('latitude', 0.0)
+            rover_status.coordinate.longitude = coord.get('longitude', 0.0)
+            rover_status.coordinate.altitude = coord.get('altitude', 0.0)
+            
+            rover_status.heading = status_data.get('heading', 0.0)
+            
+            batt = status_data.get('battery_state', {})
+            rover_status.battery_state.voltage = batt.get('voltage', 0.0)
+            rover_status.battery_state.current = batt.get('current', 0.0)
+            rover_status.battery_state.state_of_charge = batt.get('state_of_charge', 0.0)
+            
+            response.rover_status.CopyFrom(rover_status)
+            
+            self._send_response(response)
+            # Loglamayı kapalı tutalım, 1Hz de terminali spam yapmasın.
+            # self.get_logger().debug("RoverStatus gönderildi.")
+        except Exception as e:
+            self.get_logger().error(f"Status gönderme hatası: {e} (veri: {msg.data})")
 
     # =========================================================================
     # Alma (ARC Sunucu → Rover)

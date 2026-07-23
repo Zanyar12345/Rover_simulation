@@ -32,6 +32,7 @@ class AutonomousMissionController(Node):
         self.rscp_task_complete_pub = self.create_publisher(String, '/rscp/send_task_complete', 10)
         self.mode_pub = self.create_publisher(String, '/control_mode', 10)
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.rscp_status_pub = self.create_publisher(String, '/rscp/send_status', 10)
         
         # Subscriber: ARC sunucusundan gelen görevler (RSCP client JSON olarak yayınlar)
         self.rscp_task_sub = self.create_subscription(String, '/rscp/received_task', self.rscp_task_callback, 10)
@@ -71,41 +72,8 @@ class AutonomousMissionController(Node):
         self.target_nav_lat = 0.0
         self.target_nav_lon = 0.0
         self.send_task_complete_after_nav = False
-        # GPS koordinatları — YAML config'den okunur (varsayılan değerler burada)
-        self.declare_parameter('gps_airlock_exit_lat', 39.000010)
-        self.declare_parameter('gps_airlock_exit_lon', 32.000000)
-        self.declare_parameter('gps_antenna_area_lat', 39.000050)
-        self.declare_parameter('gps_antenna_area_lon', 32.000050)
-        self.declare_parameter('gps_shackleton_crater_lat', 39.000100)
-        self.declare_parameter('gps_shackleton_crater_lon', 32.000100)
-        self.declare_parameter('gps_lava_tube_entrance_lat', 39.000150)
-        self.declare_parameter('gps_lava_tube_entrance_lon', 32.000150)
-        self.declare_parameter('gps_airlock_return_lat', 39.000000)
-        self.declare_parameter('gps_airlock_return_lon', 32.000000)
-        
-        self.gps_coords = {
-            'airlock_exit': (
-                self.get_parameter('gps_airlock_exit_lat').value,
-                self.get_parameter('gps_airlock_exit_lon').value
-            ),
-            'antenna_area': (
-                self.get_parameter('gps_antenna_area_lat').value,
-                self.get_parameter('gps_antenna_area_lon').value
-            ),
-            'shackleton_crater': (
-                self.get_parameter('gps_shackleton_crater_lat').value,
-                self.get_parameter('gps_shackleton_crater_lon').value
-            ),
-            'lava_tube_entrance': (
-                self.get_parameter('gps_lava_tube_entrance_lat').value,
-                self.get_parameter('gps_lava_tube_entrance_lon').value
-            ),
-            'airlock_return': (
-                self.get_parameter('gps_airlock_return_lat').value,
-                self.get_parameter('gps_airlock_return_lon').value
-            ),
-        }
-        self.get_logger().info(f"GPS Koordinatları yüklendi: {self.gps_coords}")
+        self.armed = False
+        # GPS koordinatları artık doğrudan RSCP üzerinden dinamik olarak gelmektedir.
         
         self.aruco_detected = False
         self.rock_detected = False
@@ -134,6 +102,44 @@ class AutonomousMissionController(Node):
         
         # Start mission loop in a timer to not block
         self.timer = self.create_timer(1.0, self.mission_loop)
+        
+        # RSCP Status Timer (1 Hz)
+        self.status_timer = self.create_timer(1.0, self.publish_status)
+
+    def publish_status(self):
+        import json
+        status_data = {}
+        
+        # Determine RoverState: 0=DISARMED, 1=AUTONOMOUS, 2=MANUAL
+        status_data['state'] = 1 if self.armed else 0
+        
+        # Coordinate
+        lat = getattr(self, 'current_lat', 0.0) or 0.0
+        lon = getattr(self, 'current_lon', 0.0) or 0.0
+        
+        status_data['coordinate'] = {
+            'latitude': lat,
+            'longitude': lon,
+            'altitude': 0.0
+        }
+        
+        # Heading (yaw in degrees from 0 to 360)
+        yaw = getattr(self, 'current_yaw', 0.0)
+        heading = math.degrees(yaw)
+        if heading < 0:
+            heading += 360.0
+        status_data['heading'] = heading
+        
+        # Battery state (dummy for simulation)
+        status_data['battery_state'] = {
+            'voltage': 24.0,
+            'current': 2.5,
+            'state_of_charge': 0.95
+        }
+        
+        msg = String()
+        msg.data = json.dumps(status_data)
+        self.rscp_status_pub.publish(msg)
 
     def aruco_callback(self, msg):
         self.aruco_detected = True
@@ -238,6 +244,13 @@ class AutonomousMissionController(Node):
             
             # Orta kısımdaki yatay şeridi al (kamera açısına göre yer/gökyüzü parazitini önlemek için)
             strip = depth_image[h//2 - 20 : h//2 + 20, :]
+            
+            # TAVAN (ÇATI) KONTROLÜ: Görüntünün üstte kalan 1/3'lük dilimine bak (Sadece 30 piksel değil, garantili)
+            roof_strip = depth_image[0 : h//3, :]
+            # Gökyüzü değilse (NaN, Inf değil) ve üstümüzdeki tavan 3.5 metreden yakınsa çatı say!
+            roof_valid = roof_strip[(roof_strip > 0.0) & (roof_strip < 3.5) & (~self.np.isnan(roof_strip)) & (~self.np.isinf(roof_strip))]
+            # Üstteki devasa bölgenin en az %2'sini kaplıyorsa çatının altındayız
+            self.under_roof = len(roof_valid) > (roof_strip.size * 0.02)
             
             # Sol ve sağ bölgeler (3'e böl, sol 1/3, sağ 1/3)
             left_part = strip[:, :w//3]
@@ -405,6 +418,7 @@ class AutonomousMissionController(Node):
                 
             elif msg_type == 'arm_disarm':
                 armed = task.get('arm', False)
+                self.armed = armed
                 if armed:
                     self.get_logger().info("Rover ARM edildi — Otonom mod aktif!")
                     if self.paused_state is not None and self.paused_state not in ['DONE', 'WAITING_FOR_SERVER']:
@@ -445,13 +459,6 @@ class AutonomousMissionController(Node):
                 lat = task.get('latitude', 0.0)
                 lon = task.get('longitude', 0.0)
                 
-                # Fallback mekanizması
-                if lat == 0.0 or lon == 0.0:
-                    if self.mission_stage == 3:
-                        lat, lon = self.gps_coords['lava_tube_entrance']
-                    elif self.mission_stage == 4:
-                        lat, lon = self.gps_coords['airlock_return']
-                        
                 self.target_nav_lat = lat
                 self.target_nav_lon = lon
                 self.get_logger().info(f"Sunucudan GPS hedefi alındı: {lat}, {lon}")
@@ -466,13 +473,6 @@ class AutonomousMissionController(Node):
                 lon = task.get('longitude', 0.0)
                 radius = task.get('radius', 10.0)
                 
-                # Fallback mekanizması
-                if lat == 0.0 or lon == 0.0:
-                    if self.mission_stage == 1:
-                        lat, lon = self.gps_coords['antenna_area']
-                    elif self.mission_stage == 2:
-                        lat, lon = self.gps_coords['shackleton_crater']
-                        
                 self.target_nav_lat = lat
                 self.target_nav_lon = lon
                 self.get_logger().info(f"Arama alanı alındı: ({lat}, {lon}), r={radius}m")
@@ -725,14 +725,26 @@ class AutonomousMissionController(Node):
                 twist.angular.z = getattr(self, 'tunnel_angular_z', 0.0)
                 self.cmd_vel_pub.publish(twist)
                 
-                # Anlık ölçümü güncelle (Öklid uzaklığı)
-                if self.tube_start_x is not None:
-                    dx = self.current_odom_x - self.tube_start_x
-                    dy = self.current_odom_y - self.tube_start_y
-                    self.measured_length = math.sqrt(dx**2 + dy**2)
+                # Sadece çatı altındayken ilerlemeyi adım adım toplayarak (Integral) ölçüm yap
+                if not hasattr(self, 'last_odom_x'):
+                    self.last_odom_x = self.current_odom_x
+                    self.last_odom_y = self.current_odom_y
+                    self.measured_length = 0.0
+
+                dx = self.current_odom_x - self.last_odom_x
+                dy = self.current_odom_y - self.last_odom_y
+                step_dist = math.sqrt(dx**2 + dy**2)
+                
+                if getattr(self, 'under_roof', False):
+                    self.measured_length += step_dist
+                
+                # Bir sonraki adım için son konumu kaydet (Böylece çatı olmayan yerden geçerken mesafe sıçramaz)
+                self.last_odom_x = self.current_odom_x
+                self.last_odom_y = self.current_odom_y
                 
                 if self.wait_counter % 5 == 0:
-                    self.get_logger().info(f"Tünel İçi İlerleme... Anlık Uzunluk: {self.measured_length:.2f} metre")
+                    status = "ÇATI ALTINDA (Ölçülüyor)" if getattr(self, 'under_roof', False) else "AÇIK GÖKYÜZÜ (Ölçülmüyor)"
+                    self.get_logger().info(f"Tünel: {status} | Ölçülen Karanlık Kısım: {self.measured_length:.2f} m")
                 
                 # ÇIKIŞ KONTROLÜ: Eğer kamera çıkıştaki ArUco'yu görürse veya süre biterse çık!
                 if self.aruco_detected or self.wait_counter <= 0:
