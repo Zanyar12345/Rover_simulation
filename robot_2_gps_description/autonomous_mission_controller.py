@@ -28,7 +28,7 @@ class AutonomousMissionController(Node):
         # Publishers
         self.rscp_gps_pub = self.create_publisher(String, '/rscp/send_coordinates', 10)
         self.rscp_distance_pub = self.create_publisher(String, '/rscp/send_distance', 10)
-        self.rscp_ack_pub = self.create_publisher(String, '/rscp/send_ack', 10)
+        # ACK artık rscp_client.py tarafından her komutta otomatik gönderiliyor.
         self.rscp_task_complete_pub = self.create_publisher(String, '/rscp/send_task_complete', 10)
         self.mode_pub = self.create_publisher(String, '/control_mode', 10)
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -100,8 +100,8 @@ class AutonomousMissionController(Node):
         
         self.get_logger().info("Autonomous Mission Controller initialized.")
         
-        # Start mission loop in a timer to not block
-        self.timer = self.create_timer(1.0, self.mission_loop)
+        # Start mission loop in a timer to not block (10 Hz)
+        self.timer = self.create_timer(0.1, self.mission_loop)
         
         # RSCP Status Timer (1 Hz)
         self.status_timer = self.create_timer(1.0, self.publish_status)
@@ -374,7 +374,11 @@ class AutonomousMissionController(Node):
         goal_msg.pose.pose.position.y = y
         goal_msg.pose.pose.orientation.w = 1.0 # No rotation
         
-        self.nav_client.wait_for_server()
+        if not self.nav_client.wait_for_server(timeout_sec=1.0):
+            self.get_logger().error("Nav2 server timeout! Retrying later...")
+            self.nav_future = None
+            return
+
         self.nav_future = self.nav_client.send_goal_async(goal_msg)
 
     def send_rscp_gps(self, lat, lon, alt=0.0):
@@ -391,11 +395,7 @@ class AutonomousMissionController(Node):
         self.rscp_distance_pub.publish(msg)
         self.get_logger().info(f"RSCP Mesafe gönderildi: {distance_m:.2f} m")
 
-    def send_rscp_ack(self):
-        """RSCP Acknowledge gönderir."""
-        msg = String()
-        msg.data = "ACK"
-        self.rscp_ack_pub.publish(msg)
+    # send_rscp_ack() kaldırıldı — rscp_client.py her komuta otomatik ACK gönderiyor.
 
     def send_rscp_task_complete(self):
         """RSCP TaskFinished gönderir (bir stage tamamlandığında)."""
@@ -511,6 +511,18 @@ class AutonomousMissionController(Node):
             pass
             
         elif self.current_state == 'WAIT_NAV_ACCEPT':
+            if getattr(self, 'nav_future', None) is None:
+                # wait_for_server failed, retry sending goal
+                self.nav_retry_count += 1
+                if self.nav_retry_count <= 5:
+                    self.get_logger().error(f'Navigasyon server bulunamadı! Tekrar deneniyor... ({self.nav_retry_count}/5)')
+                    self.send_nav_goal(self.current_nav_x, self.current_nav_y)
+                else:
+                    self.get_logger().error('Navigasyon server defalarca reddedildi! Adım atlanıyor...')
+                    self.nav_retry_count = 0
+                    self.current_state = getattr(self, 'next_state_after_nav', 'WAITING_FOR_SERVER')
+                return
+
             if self.nav_future.done():
                 goal_handle = self.nav_future.result()
                 if not goal_handle.accepted:
@@ -615,7 +627,7 @@ class AutonomousMissionController(Node):
             if not hasattr(self, 'wait_counter'): self.wait_counter = 0
             if self.wait_counter == 0:
                 self.get_logger().info("Step 5: Installing Antenna...")
-                self.wait_counter = 2 # 2 saniye bekle
+                self.wait_counter = 20 # 2 saniye bekle (10Hz)
             else:
                 self.wait_counter -= 1
                 if self.wait_counter <= 0:
@@ -630,24 +642,19 @@ class AutonomousMissionController(Node):
             self.current_state = 'WAIT_NAV_ACCEPT'
             
         elif self.current_state == 'LOCATE_ROCK':
-            if not hasattr(self, 'wait_counter'): self.wait_counter = 0
-            if self.wait_counter == 0:
+            if not getattr(self, 'rock_scan_started', False):
                 self.get_logger().info("Step 7: Locating Ilmenite Rock (360 derece tarama)...")
                 self.detected_rocks = []
                 self.accumulated_yaw = 0.0
                 self.last_yaw = self.current_yaw
                 self.publish_spin_cmd(activate=True)
-                self.wait_counter = 60 # 60 saniye timeout (tam tur dönmesi için güvenli süre)
+                self.rock_scan_started = True
             else:
-                self.wait_counter -= 1
                 self.publish_spin_cmd(activate=True)
                 
-                if self.accumulated_yaw >= 2 * math.pi or self.wait_counter <= 0:
+                if self.accumulated_yaw >= 2 * math.pi:
                     self.publish_spin_cmd(activate=False)
-                    if self.accumulated_yaw >= 2 * math.pi:
-                        self.get_logger().info("360 derece tarama tamamlandı.")
-                    else:
-                        self.get_logger().warn("Tarama süresi doldu (Timeout).")
+                    self.get_logger().info("360 derece tarama tamamlandı.")
                         
                     if len(self.detected_rocks) > 0:
                         # Find the best rock
@@ -663,7 +670,7 @@ class AutonomousMissionController(Node):
                             
                     self.send_rscp_task_complete()
                     self.current_state = 'WAITING_FOR_SERVER'
-                    self.wait_counter = 0
+                    self.rock_scan_started = False
             
         elif self.current_state == 'REACH_LAVA_TUBE':
             self.get_logger().info("Step 8: Reaching Lava Tube Entrance...")
@@ -673,13 +680,10 @@ class AutonomousMissionController(Node):
             self.current_state = 'WAIT_NAV_ACCEPT'
             
         elif self.current_state == 'ENTER_LAVA_TUBE':
-            if not hasattr(self, 'wait_counter'): self.wait_counter = 0
-            if self.wait_counter == 0:
+            if not getattr(self, 'tube_search_started', False):
                 self.get_logger().info("Step 9: Entering Lava Tube (Looking for ArUco)...")
-                self.wait_counter = 60 # 60 saniye arama / hizalanma süresi
+                self.tube_search_started = True
             else:
-                self.wait_counter -= 1
-                
                 if self.aruco_detected:
                     # ArUco'yu dinamik olarak ekranın ortasına hizala (Çözünürlüğe göre otomatik)
                     error = self.image_center_x - getattr(self, 'aruco_x', self.image_center_x)
@@ -693,7 +697,7 @@ class AutonomousMissionController(Node):
                         self.tube_start_y = self.current_odom_y
                         
                         self.current_state = 'MEASURE_ROOF'
-                        self.wait_counter = 0
+                        self.tube_search_started = False
                         self.aruco_detected = False
                     else:
                         # Yavaşça dönerek ortala
@@ -703,22 +707,14 @@ class AutonomousMissionController(Node):
                         self.cmd_vel_pub.publish(twist)
                 else:
                     self.publish_spin_cmd(activate=True)
-                    if self.wait_counter <= 0:
-                        self.get_logger().warn("Lava Tube ArUco bulunamadı! Dümdüz içeri giriliyor.")
-                        self.publish_spin_cmd(activate=False)
-                        self.tube_start_x = self.current_odom_x
-                        self.tube_start_y = self.current_odom_y
-                        self.aruco_detected = False
-                        self.current_state = 'MEASURE_ROOF'
-                        self.wait_counter = 0
             
         elif self.current_state == 'MEASURE_ROOF':
-            if not hasattr(self, 'wait_counter'): self.wait_counter = 0
-            if self.wait_counter == 0:
+            if not getattr(self, 'measure_roof_started', False):
                 self.get_logger().info("Step 10: Driving and measuring roof length. Waiting for exit ArUco...")
-                self.wait_counter = 60 # Tünelde maksimum 60 saniye ilerle (Timeout güvenlik için)
+                self.measure_roof_started = True
+                self.measure_roof_log_counter = 0
             else:
-                self.wait_counter -= 1
+                self.measure_roof_log_counter += 1
                 
                 # Tünel içinde depth kamerasından gelen verilerle ortalanarak ilerle
                 twist = Twist()
@@ -743,30 +739,27 @@ class AutonomousMissionController(Node):
                 self.last_odom_x = self.current_odom_x
                 self.last_odom_y = self.current_odom_y
                 
-                if self.wait_counter % 5 == 0:
+                if self.measure_roof_log_counter % 50 == 0: # 5 saniyede bir logla
                     status = "ÇATI ALTINDA (Ölçülüyor)" if getattr(self, 'under_roof', False) else "AÇIK GÖKYÜZÜ (Ölçülmüyor)"
                     self.get_logger().info(f"Tünel: {status} | Ölçülen Karanlık Kısım: {self.measured_length:.2f} m")
                 
-                # ÇIKIŞ KONTROLÜ: Eğer kamera çıkıştaki ArUco'yu görürse veya süre biterse çık!
-                if self.aruco_detected or self.wait_counter <= 0:
-                    if self.aruco_detected:
-                        self.get_logger().info("Çıkış ArUco'su görüldü! Tünel Bitti.")
-                    else:
-                        self.get_logger().warn("Süre doldu (Timeout). Tünelden çıkıldığı varsayılıyor.")
-                        
+                # ÇIKIŞ KONTROLÜ: Kamera çıkıştaki ArUco'yu görene kadar ilerle!
+                if self.aruco_detected:
+                    self.get_logger().info("Çıkış ArUco'su görüldü! Tünel Bitti.")
+                    
                     # Tünelden çıkış anı (Tekerlekleri durdur)
                     twist.linear.x = 0.0
                     self.cmd_vel_pub.publish(twist)
                     
                     self.current_state = 'EXIT_LAVA_TUBE'
-                    self.wait_counter = 0
+                    self.measure_roof_started = False
             
         elif self.current_state == 'EXIT_LAVA_TUBE':
             if not hasattr(self, 'wait_counter'): self.wait_counter = 0
             if self.wait_counter == 0:
                 self.get_logger().info(f"Step 11: Exiting Lava Tube. Final Length: {self.measured_length:.2f} meters")
                 self.send_rscp_distance(self.measured_length)
-                self.wait_counter = 2
+                self.wait_counter = 20 # 2 saniye (10Hz)
             else:
                 self.wait_counter -= 1
                 if self.wait_counter <= 0:
@@ -784,16 +777,13 @@ class AutonomousMissionController(Node):
             self.current_state = 'WAIT_NAV_ACCEPT'
             
         elif self.current_state == 'SEARCH_AIRLOCK_ARUCO':
-            if not hasattr(self, 'wait_counter'): self.wait_counter = 0
-            if self.wait_counter == 0:
+            if not getattr(self, 'airlock_search_started', False):
                 self.get_logger().info("Airlock GPS hedefine varıldı. ArUco aranıyor (kendi etrafında dönüş)...")
                 self.accumulated_yaw = 0.0
                 self.last_yaw = self.current_yaw
                 self.publish_spin_cmd(activate=True)
-                self.wait_counter = 60 # 60 sn
+                self.airlock_search_started = True
             else:
-                self.wait_counter -= 1
-                
                 if self.aruco_detected:
                     # ArUco'yu dinamik olarak ekranın ortasına hizala (Çözünürlüğe göre otomatik)
                     error = self.image_center_x - getattr(self, 'aruco_x', self.image_center_x)
@@ -802,7 +792,7 @@ class AutonomousMissionController(Node):
                         self.get_logger().info("Airlock kapısı ortalandı! İçeri giriliyor...")
                         self.publish_spin_cmd(activate=False)
                         self.current_state = 'ENTER_AIRLOCK'
-                        self.wait_counter = 0
+                        self.airlock_search_started = False
                         self.aruco_detected = False
                     else:
                         # Yavaşça dönerek ortala
@@ -812,17 +802,14 @@ class AutonomousMissionController(Node):
                         self.cmd_vel_pub.publish(twist)
                 else:
                     self.publish_spin_cmd(activate=True)
-                    if self.accumulated_yaw >= 2 * math.pi or self.wait_counter <= 0:
-                        self.publish_spin_cmd(activate=False)
-                        self.get_logger().warn("Airlock ArUco bulunamadı! Yine de dümdüz içeri girildiği varsayılıyor.")
-                        self.current_state = 'ENTER_AIRLOCK'
-                        self.wait_counter = 0
+                    # ArUco bulunana kadar sonsuza dek dönmeye devam eder (Timeout yok)
+            
 
         elif self.current_state == 'ENTER_AIRLOCK':
             if not hasattr(self, 'wait_counter'): self.wait_counter = 0
             if self.wait_counter == 0:
                 self.get_logger().info("Step 13: Entering Airlock...")
-                self.wait_counter = 10 # 10 saniye boyunca ileri sür
+                self.wait_counter = 100 # 10 saniye boyunca ileri sür (10Hz)
             else:
                 self.wait_counter -= 1
                 

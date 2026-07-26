@@ -39,8 +39,8 @@ class HotasProcessor(Node):
             'light': False
         }
 
-        self.rover_width = 82   # cm
-        self.rover_length = 95  # cm
+        self.rover_width = 60 # unit in centimeters
+        self.rover_length = 96.5 # unit in centimeters
 
         self.previous_vertical_joy_comp = 0
         self.control_threshold = 2
@@ -304,19 +304,9 @@ class HotasProcessor(Node):
     def joy_callrear(self, msg):
         self.joy_msg = msg
         self.check_mode_changes(msg)
-        
-        if self.last_cmd_time is not None:
-            time_diff = (self.get_clock().now() - self.last_cmd_time).nanoseconds / 1e9
-            if time_diff < 0.5:
-                return
 
-        self.control_mode = "Joy"
-        if self.current_mode == 0:
-            self.process_normal_mode(self.joy_msg)
-        elif self.current_mode == 1:
-            self.process_crab_mode(self.joy_msg)
-        elif self.current_mode == 2:
-            self.process_spin_mode(self.joy_msg)
+        return
+
 
     def timer_callrear(self):
         for name, publisher in self.publishers_.items():

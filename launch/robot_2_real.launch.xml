@@ -41,7 +41,7 @@
       <arg name="args" value="-d"/>
       <arg name="database_path" value=""/>
       <arg name="rgbd_sync" value="true"/>
-      <arg name="rtabmap_viz" value="true"/>
+      <arg name="rtabmap_viz" value="false"/>
       <arg name="approx_sync_max_interval" value="0.02"/>
       <arg name="wait_for_transform" value="1.0"/>
   </include>

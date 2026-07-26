@@ -18,8 +18,8 @@ class OdomCalculator(Node):
 
         # Fiziksel Olculer (Metre)
         self.wheel_radius = 0.09  
-        self.rover_length = 0.95 # On ve arka tekerler arasi mesafe
-        self.rover_width = 0.82  # Sag ve sol teker arasi mesafe
+        self.rover_length = 0.965 # On ve arka tekerler arasi mesafe
+        self.rover_width = 0.60  # Sag ve sol teker arasi mesafe
         
         self.x_pos = 0.0
         self.y_pos = 0.0
