@@ -612,7 +612,9 @@ class AutonomousMissionController(Node):
                     self.get_logger().info(
                         f"Zirve bulundu: Yerel=({x:.2f}, {y:.2f}) → GPS=({peak_lat:.6f}, {peak_lon:.6f})"
                     )
-                    self.send_rscp_gps(peak_lat, peak_lon)
+                    # Zirve koordinatını Navigasyon bitince göndermek üzere kaydet
+                    self.peak_lat_to_send = peak_lat
+                    self.peak_lon_to_send = peak_lon
                     
                     self.get_logger().info("Tepe noktasına doğru hareket ediliyor...")
                     self.send_nav_goal(x, y)
@@ -624,16 +626,19 @@ class AutonomousMissionController(Node):
                     self.current_state = 'INSTALL_ANTENNA'
             
         elif self.current_state == 'INSTALL_ANTENNA':
-            if not hasattr(self, 'wait_counter'): self.wait_counter = 0
-            if self.wait_counter == 0:
+            if not getattr(self, 'install_antenna_started', False):
+                self.get_logger().info("Zirveye ulaşıldı. Koordinat RSCP'ye gönderiliyor...")
+                if hasattr(self, 'peak_lat_to_send') and hasattr(self, 'peak_lon_to_send'):
+                    self.send_rscp_gps(self.peak_lat_to_send, self.peak_lon_to_send)
                 self.get_logger().info("Step 5: Installing Antenna...")
-                self.wait_counter = 20 # 2 saniye bekle (10Hz)
+                self.install_antenna_counter = 20 # 2 saniye bekle (10Hz)
+                self.install_antenna_started = True
             else:
-                self.wait_counter -= 1
-                if self.wait_counter <= 0:
+                self.install_antenna_counter -= 1
+                if self.install_antenna_counter <= 0:
                     self.send_rscp_task_complete()
                     self.current_state = 'WAITING_FOR_SERVER'
-                    self.wait_counter = 0
+                    self.install_antenna_started = False
             
         elif self.current_state == 'REACH_CRATER':
             self.get_logger().info("Step 6: Reaching Shackleton Crater...")
