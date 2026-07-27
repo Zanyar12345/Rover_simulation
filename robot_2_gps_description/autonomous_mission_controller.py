@@ -194,6 +194,9 @@ class AutonomousMissionController(Node):
         self.camera_f_x = msg.k[0]
         self.image_center_x = msg.width / 2.0
 
+    def depth_callback(self, msg):
+        self.latest_depth_msg = msg
+
     def odom_callback(self, msg):
         self.current_odom_x = msg.pose.pose.position.x
         self.current_odom_y = msg.pose.pose.position.y
