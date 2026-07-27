@@ -28,7 +28,7 @@ class RSCPClient(Node):
         # Seri port parametreleri (PDF: RS-232, 115200 baud, 1 stop bit, no parity)
         self.declare_parameter('serial_port', '/dev/ttyUSB0')
         self.declare_parameter('baud_rate', 115200)
-        self.declare_parameter('timeout', 1.0)
+        self.declare_parameter('timeout', 0.1)
         
         self.serial_port = self.get_parameter('serial_port').value
         self.baud_rate = self.get_parameter('baud_rate').value
@@ -57,6 +57,7 @@ class RSCPClient(Node):
         # Seri port bağlantısı
         self.ser = None
         self.connected = False
+        self.serial_lock = threading.Lock()  # Seri port erişimini koruma kilidi
         self.connect_to_serial()
         
         # Dinleme thread'i
@@ -76,26 +77,29 @@ class RSCPClient(Node):
     
     def connect_to_serial(self):
         """RS-232 seri port bağlantısını aç."""
-        try:
-            self.ser = serial.Serial(
-                port=self.serial_port,
-                baudrate=self.baud_rate,
-                bytesize=serial.EIGHTBITS,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                timeout=self.timeout
-            )
-            self.connected = True
-            self.get_logger().info(f"Seri port bağlantısı başarılı: {self.serial_port}")
-        except serial.SerialException as e:
-            self.connected = False
-            self.get_logger().error(
-                f"Seri port açılamadı ({self.serial_port}): {e} "
-                f"— Port bağlı mı kontrol edin."
-            )
-        except Exception as e:
-            self.connected = False
-            self.get_logger().error(f"Beklenmeyen hata: {e}")
+        with self.serial_lock:
+            try:
+                if self.ser and self.ser.is_open:
+                    self.ser.close()
+                self.ser = serial.Serial(
+                    port=self.serial_port,
+                    baudrate=self.baud_rate,
+                    bytesize=serial.EIGHTBITS,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_ONE,
+                    timeout=self.timeout
+                )
+                self.connected = True
+                self.get_logger().info(f"Seri port bağlantısı başarılı: {self.serial_port}")
+            except serial.SerialException as e:
+                self.connected = False
+                self.get_logger().error(
+                    f"Seri port açılamadı ({self.serial_port}): {e} "
+                    f"— Port bağlı mı kontrol edin."
+                )
+            except Exception as e:
+                self.connected = False
+                self.get_logger().error(f"Beklenmeyen hata: {e}")
 
     def check_connection(self):
         """Bağlantı kopmuşsa tekrar bağlanmayı dene."""
@@ -113,18 +117,19 @@ class RSCPClient(Node):
         cobs_encoded = cobs.cobs.encode(response_bytes)
         frame = cobs_encoded + b"\x00"
         
-        if self.connected and self.ser and self.ser.is_open:
-            try:
-                self.ser.write(frame)
-                self.ser.flush()
-                self.get_logger().info(f"RSCP Gönderildi: {response}")
-            except serial.SerialException as e:
-                self.get_logger().error(f"Gönderme hatası: {e}")
-                self.connected = False
-        else:
-            self.get_logger().warn(
-                f"RSCP [SİMÜLE - port yok]: {response}"
-            )
+        with self.serial_lock:
+            if self.connected and self.ser and self.ser.is_open:
+                try:
+                    self.ser.write(frame)
+                    self.ser.flush()
+                    self.get_logger().info(f"RSCP Gönderildi: {response}")
+                except serial.SerialException as e:
+                    self.get_logger().error(f"Gönderme hatası: {e}")
+                    self.connected = False
+            else:
+                self.get_logger().warn(
+                    f"RSCP [SİMÜLE - port yok]: {response}"
+                )
 
     def send_ack_callback(self, msg):
         """Acknowledge mesajı gönderir (her komut alındığında çağrılmalı)."""
@@ -220,7 +225,10 @@ class RSCPClient(Node):
                 continue
             
             try:
-                data = self.ser.read(1)
+                with self.serial_lock:
+                    if not self.connected or self.ser is None or not self.ser.is_open:
+                        continue
+                    data = self.ser.read(1)
                 if not data:
                     continue
                     
