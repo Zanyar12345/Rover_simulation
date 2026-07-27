@@ -33,6 +33,10 @@ class AutonomousMissionController(Node):
         self.mode_pub = self.create_publisher(String, '/control_mode', 10)
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         self.rscp_status_pub = self.create_publisher(String, '/rscp/send_status', 10)
+        self.activity_light_pub = self.create_publisher(String, '/activity_light', 10)
+        
+        self.current_control_mode = "NAV"
+        self.control_mode_sub = self.create_subscription(String, '/control_mode', self.control_mode_callback, 10)
         
         # Subscriber: ARC sunucusundan gelen görevler (RSCP client JSON olarak yayınlar)
         self.rscp_task_sub = self.create_subscription(String, '/rscp/received_task', self.rscp_task_callback, 10)
@@ -106,12 +110,37 @@ class AutonomousMissionController(Node):
         # RSCP Status Timer (1 Hz)
         self.status_timer = self.create_timer(1.0, self.publish_status)
 
+    def control_mode_callback(self, msg):
+        self.current_control_mode = msg.data
+
     def publish_status(self):
         import json
         status_data = {}
         
         # Determine RoverState: 0=DISARMED, 1=AUTONOMOUS, 2=MANUAL
-        status_data['state'] = 1 if self.armed else 0
+        if not self.armed:
+            rover_state_num = 0
+        else:
+            if self.current_control_mode.upper() == "JOY":
+                rover_state_num = 2
+            else:
+                rover_state_num = 1
+                
+        status_data['state'] = rover_state_num
+        
+        # README tablosuna ve ARC Kural 3.1.5.1'e göre ışık mantığı:
+        if not self.armed:
+            light_color = "RED" # Disarmed -> Kırmızı Kalp
+        elif self.current_control_mode.upper() == "JOY":
+            light_color = "GREEN" # Manuel Kontrol -> Yeşil Kalp (ARC Kuralı)
+        elif self.current_state in ['WAITING_FOR_SERVER', 'DONE']:
+            light_color = "GREEN" # Görev bitti / Yeni görev bekleniyor -> Yeşil Kalp
+        else:
+            light_color = "YELLOW" # Seyir halinde, arama yapıyor veya işlemde -> Sarı Kalp
+            
+        light_msg = String()
+        light_msg.data = light_color
+        self.activity_light_pub.publish(light_msg)
         
         # Coordinate
         lat = getattr(self, 'current_lat', 0.0) or 0.0
@@ -500,7 +529,7 @@ class AutonomousMissionController(Node):
         
         if activate:
             mode_msg.data = "SPIN"
-            twist_msg.angular.z = 0.2
+            twist_msg.angular.z = 0.5
         else:
             mode_msg.data = "NAV"
             twist_msg.angular.z = 0.0 
@@ -708,10 +737,14 @@ class AutonomousMissionController(Node):
                         self.tube_search_started = False
                         self.aruco_detected = False
                     else:
-                        # Yavaşça dönerek ortala
+                        # Yavaşça dönerek ortala (Deadband korumalı)
                         twist = Twist()
-                        twist.angular.z = 0.001 * error
-                        twist.angular.z = max(-0.3, min(0.3, twist.angular.z)) # Sınırla
+                        if error > 0:
+                            twist.angular.z = max(0.4, min(0.8, 0.003 * error))
+                        elif error < 0:
+                            twist.angular.z = min(-0.4, max(-0.8, 0.003 * error))
+                        else:
+                            twist.angular.z = 0.0
                         self.cmd_vel_pub.publish(twist)
                 else:
                     self.publish_spin_cmd(activate=True)
@@ -803,10 +836,14 @@ class AutonomousMissionController(Node):
                         self.airlock_search_started = False
                         self.aruco_detected = False
                     else:
-                        # Yavaşça dönerek ortala
+                        # Yavaşça dönerek ortala (Deadband korumalı)
                         twist = Twist()
-                        twist.angular.z = 0.001 * error
-                        twist.angular.z = max(-0.3, min(0.3, twist.angular.z)) # Sınırla
+                        if error > 0:
+                            twist.angular.z = max(0.4, min(0.8, 0.003 * error))
+                        elif error < 0:
+                            twist.angular.z = min(-0.4, max(-0.8, 0.003 * error))
+                        else:
+                            twist.angular.z = 0.0
                         self.cmd_vel_pub.publish(twist)
                 else:
                     self.publish_spin_cmd(activate=True)

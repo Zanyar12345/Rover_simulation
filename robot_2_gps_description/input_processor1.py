@@ -304,6 +304,13 @@ class HotasProcessor(Node):
     def joy_callrear(self, msg):
         self.joy_msg = msg
         self.check_mode_changes(msg)
+        
+        # Eğer Manuel (Joy) moddaysak motorlara joystick verilerini yolla
+        if self.control_mode == "Joy":
+            if self.current_mode == 0:
+                self.process_normal_mode(None)
+            elif self.current_mode == 2:
+                self.process_spin_mode(None)
 
         return
 
@@ -314,12 +321,14 @@ class HotasProcessor(Node):
 
     def cmd_vel_callrear(self, msg):
         self.last_cmd_time = self.get_clock().now()
-        self.control_mode = "NAV"
         self.cmd_vel_msg = msg
-        if self.current_mode == 0:
-            self.process_normal_mode(self.cmd_vel_msg)
-        elif self.current_mode == 2:
-            self.process_spin_mode(self.cmd_vel_msg)
+        
+        # Eğer Otonom (NAV) moddaysak Nav2'nin motor komutlarını işle
+        if self.control_mode == "NAV":
+            if self.current_mode == 0:
+                self.process_normal_mode(self.cmd_vel_msg)
+            elif self.current_mode == 2:
+                self.process_spin_mode(self.cmd_vel_msg)
     
     # def path_callback(self, msg):
     #     if len(msg.poses) > 2:

@@ -95,7 +95,7 @@
   </node>
   
   <node pkg="robot_2_gps_description" exec="joint_state_aggregator.py" name="joint_state_aggregator" output="screen"/>
-  <node pkg="robot_2_gps_description" exec="odom_calculator.py" name="odom_calculator" output="screen"/>
+  <!-- odom_calculator.py IPTAL EDILDI (Tekerlekten hiz alinamadigi icin EKF'yi 0 hiziyla bozmamasi amaciyla) -->
 
 
 

@@ -292,6 +292,12 @@ class AutonomousMissionTest(Node):
         """ARC sunucusundan gelen komutları işler."""
         import json
         try:
+            # Yeni görev/komut geldiğinde otonoma (NAV) geç
+            if hasattr(self, 'mode_pub'):
+                mode_msg = String()
+                mode_msg.data = "NAV"
+                self.mode_pub.publish(mode_msg)
+                
             task = json.loads(msg.data)
             msg_type = task.get('type', '')
             self.get_logger().info(f"RSCP Komut alındı: {msg_type} → {task}")
@@ -364,7 +370,7 @@ class AutonomousMissionTest(Node):
         
         if activate:
             mode_msg.data = "SPIN"
-            twist_msg.angular.z = 0.2
+            twist_msg.angular.z = 0.5
         else:
             mode_msg.data = "NAV"
             twist_msg.angular.z = 0.0 
@@ -563,10 +569,14 @@ class AutonomousMissionTest(Node):
                         self.wait_counter = 0
                         self.aruco_detected = False
                     else:
-                        # Yavaşça dönerek ortala
+                        # Yavaşça dönerek ortala (Deadband korumalı)
                         twist = Twist()
-                        twist.angular.z = 0.001 * error
-                        twist.angular.z = max(-0.3, min(0.3, twist.angular.z)) # Sınırla
+                        if error > 0:
+                            twist.angular.z = max(0.4, min(0.8, 0.003 * error))
+                        elif error < 0:
+                            twist.angular.z = min(-0.4, max(-0.8, 0.003 * error))
+                        else:
+                            twist.angular.z = 0.0
                         self.cmd_vel_pub.publish(twist)
                 else:
                     self.publish_spin_cmd(activate=True)
