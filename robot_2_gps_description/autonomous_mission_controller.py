@@ -58,7 +58,12 @@ class AutonomousMissionController(Node):
         self.depth_sub = self.create_subscription(Image, '/zed/zed_node/depth/depth_registered', self.depth_callback, 10)
         
         # Camera Info Subscriber for dynamic resolution adaptation
-        self.camera_info_sub = self.create_subscription(CameraInfo, '/zed/zed_node/rgb/camera_info', self.camera_info_callback, 10)
+        self.camera_info_sub = self.create_subscription(
+            CameraInfo,
+            '/zed/zed_node/rgb/color/rect/camera_info',
+            self.camera_info_callback,
+            10
+        )
         self.camera_c_x = 640.0
         self.camera_f_x = 896.0
         self.image_center_x = 640.0
@@ -171,8 +176,14 @@ class AutonomousMissionController(Node):
         self.rscp_status_pub.publish(msg)
 
     def aruco_callback(self, msg):
+        # Eğer vision_perception -1 gönderdiyse ArUco kameradan çıkmıştır.
+        if msg.x == -1.0:
+            self.aruco_detected = False
+            return
+            
         self.aruco_detected = True
         self.aruco_x = msg.x  # ArUco merkez X pikseli (Visual Servoing için)
+        self.aruco_id = int(msg.z) # Hangi ArUco'yu (M1/M2) gördüğümüzü kaydet
 
     def rock_callback(self, msg):
         if self.current_state == 'LOCATE_ROCK':
@@ -200,14 +211,14 @@ class AutonomousMissionController(Node):
                 rock_lon = self.current_lon + delta_lon
                 
                 # Hakemin verdiği yarıçapın içinde mi kontrol et
-                # if hasattr(self, 'target_nav_lat') and hasattr(self, 'target_nav_lon') and hasattr(self, 'search_radius'):
-                #     dist_x = (rock_lon - self.target_nav_lon) * 111139.0 * math.cos(math.radians(self.target_nav_lat))
-                #     dist_y = (rock_lat - self.target_nav_lat) * 111139.0
-                #     dist_from_center = math.sqrt(dist_x**2 + dist_y**2)
-                #     
-                #     if dist_from_center > self.search_radius:
-                #         # self.get_logger().debug(f"Kaya tespit edildi ama arama alanının dışında! (Mesafe: {dist_from_center:.1f}m, İzin verilen: {self.search_radius}m). Yoksayılıyor.")
-                #         return
+                if hasattr(self, 'target_nav_lat') and hasattr(self, 'target_nav_lon') and hasattr(self, 'search_radius'):
+                    dist_x = (rock_lon - self.target_nav_lon) * 111139.0 * math.cos(math.radians(self.target_nav_lat))
+                    dist_y = (rock_lat - self.target_nav_lat) * 111139.0
+                    dist_from_center = math.sqrt(dist_x**2 + dist_y**2)
+                    
+                    if dist_from_center > self.search_radius:
+                        self.get_logger().debug(f"Kaya tespit edildi ama arama alanının dışında! (Mesafe: {dist_from_center:.1f}m, İzin verilen: {self.search_radius}m). Yoksayılıyor.")
+                        return
                 
                 self.detected_rocks.append({
                     'lat': rock_lat,
@@ -223,8 +234,6 @@ class AutonomousMissionController(Node):
         self.camera_f_x = msg.k[0]
         self.image_center_x = msg.width / 2.0
 
-    def depth_callback(self, msg):
-        self.latest_depth_msg = msg
 
     def odom_callback(self, msg):
         self.current_odom_x = msg.pose.pose.position.x
@@ -505,6 +514,7 @@ class AutonomousMissionController(Node):
                 lat = task.get('latitude', 0.0)
                 lon = task.get('longitude', 0.0)
                 radius = task.get('radius', 10.0)
+                self.search_radius = radius # Hakem yarıçapını kaydet
                 
                 self.target_nav_lat = lat
                 self.target_nav_lon = lon
@@ -574,8 +584,9 @@ class AutonomousMissionController(Node):
 
         elif self.current_state == 'WAIT_NAV_RESULT':
             # Eğer hava kilidine dönüş aşamasındaysak ve ArUco görürsek navigasyonu kes.
+            # Not: Yapay zeka artık ID yolluyor (self.aruco_id), ileride spesifik bir ID (örn 1 = Airlock) aranacaksa `and self.aruco_id == 1` eklenebilir.
             if self.mission_stage == 4 and self.aruco_detected:
-                self.get_logger().info("Airlock ArUco tespit edildi! Navigasyon iptal ediliyor, hava kilidine manuel giriliyor.")
+                self.get_logger().info(f"Airlock ArUco (ID: {getattr(self, 'aruco_id', 'Bilinmiyor')}) tespit edildi! Navigasyon iptal ediliyor, manuel giriliyor.")
                 if hasattr(self, 'nav_future') and self.nav_future.done():
                     try:
                         self.nav_future.result().cancel_goal_async()
@@ -655,6 +666,11 @@ class AutonomousMissionController(Node):
                     
                 except Exception as e:
                     self.get_logger().error(f"Failed to get peak: {e}")
+                    # Fallback: Kendi konumumuzu gönder
+                    if hasattr(self, 'current_lat') and self.current_lat is not None:
+                        self.peak_lat_to_send = self.current_lat
+                        self.peak_lon_to_send = self.current_lon
+                        self.get_logger().warn("Zirve hesabı çöktü, yedek olarak kendi konumumuz gönderilecek!")
                     self.current_state = 'INSTALL_ANTENNA'
             
         elif self.current_state == 'INSTALL_ANTENNA':
