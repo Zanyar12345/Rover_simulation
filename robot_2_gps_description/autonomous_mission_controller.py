@@ -585,8 +585,8 @@ class AutonomousMissionController(Node):
         elif self.current_state == 'WAIT_NAV_RESULT':
             # Eğer hava kilidine dönüş aşamasındaysak ve ArUco görürsek navigasyonu kes.
             # Not: Yapay zeka artık ID yolluyor (self.aruco_id), ileride spesifik bir ID (örn 1 = Airlock) aranacaksa `and self.aruco_id == 1` eklenebilir.
-            if self.mission_stage == 4 and self.aruco_detected:
-                self.get_logger().info(f"Airlock ArUco (ID: {getattr(self, 'aruco_id', 'Bilinmiyor')}) tespit edildi! Navigasyon iptal ediliyor, manuel giriliyor.")
+            if self.mission_stage == 4 and self.aruco_detected and getattr(self, 'aruco_id', -1) == 1:
+                self.get_logger().info(f"Airlock ArUco (ID: {self.aruco_id}) tespit edildi! Navigasyon iptal ediliyor, manuel giriliyor.")
                 if hasattr(self, 'nav_future') and self.nav_future.done():
                     try:
                         self.nav_future.result().cancel_goal_async()
@@ -621,6 +621,7 @@ class AutonomousMissionController(Node):
                 self.get_logger().warn("Height scanner service not available, skipping.")
                 self.current_state = 'INSTALL_ANTENNA'
                 
+
         elif self.current_state == 'WAIT_START_SCAN':
             if self.scan_future.done():
                 self.get_logger().info("Algılayıcılar açıldı. Kendi etrafında dönme başlatılıyor (360 derece dönüş)...")
@@ -734,15 +735,27 @@ class AutonomousMissionController(Node):
             
         elif self.current_state == 'ENTER_LAVA_TUBE':
             if not getattr(self, 'tube_search_started', False):
-                self.get_logger().info("Step 9: Entering Lava Tube (Looking for ArUco)...")
+                self.get_logger().info("Step 9: Entering Lava Tube (Looking for ArUco ID 2)...")
                 self.tube_search_started = True
+                self.tube_wait_counter = 600 # 60 saniye
+                self.accumulated_yaw = 0.0
+                self.last_yaw = self.current_yaw
+                self.publish_spin_cmd(activate=True)
             else:
-                if self.aruco_detected:
+                self.tube_wait_counter -= 1
+                if self.tube_wait_counter <= 0 or (hasattr(self, 'accumulated_yaw') and abs(self.accumulated_yaw) >= 2 * math.pi):
+                    self.get_logger().warn("Lava Tube ArUco 360 derece taranmasına rağmen bulunamadı! Timeout doldu, mecburen körlemesine içeri giriliyor...")
+                    self.current_state = 'MEASURE_ROOF'
+                    self.tube_search_started = False
+                    self.accumulated_yaw = 0.0
+                    return
+                
+                if self.aruco_detected and getattr(self, 'aruco_id', -1) == 2:
                     # ArUco'yu dinamik olarak ekranın ortasına hizala (Çözünürlüğe göre otomatik)
                     error = self.image_center_x - getattr(self, 'aruco_x', self.image_center_x)
                     
                     if abs(error) < 40: # 40 piksel toleransla ortalandı
-                        self.get_logger().info("Lava Tube kapısı ortalandı! İçeri giriliyor...")
+                        self.get_logger().info("Lava Tube kapısı (ID 2) ortalandı! İçeri giriliyor...")
                         self.publish_spin_cmd(activate=False)
                         
                         # ArUco'yu gördüğümüz (ve hizalandığımız) anı tüpün girişi kabul et
@@ -811,6 +824,17 @@ class AutonomousMissionController(Node):
                     self.current_state = 'EXIT_LAVA_TUBE'
                     self.measure_roof_started = False
             
+            # Çıkış timeout koruması
+            if not hasattr(self, 'roof_exit_counter'): self.roof_exit_counter = 600 # 60 sn
+            self.roof_exit_counter -= 1
+            if self.roof_exit_counter <= 0:
+                self.get_logger().warn("MEASURE_ROOF Timeout: Çıkış bulunamadı, çıkıldığı varsayılıyor.")
+                self.send_rscp_task_complete()
+                self.current_state = 'WAITING_FOR_SERVER'
+                self.roof_exit_counter = 600
+                self.measure_roof_started = False
+                return
+            
         elif self.current_state == 'EXIT_LAVA_TUBE':
             if not hasattr(self, 'wait_counter'): self.wait_counter = 0
             if self.wait_counter == 0:
@@ -835,18 +859,27 @@ class AutonomousMissionController(Node):
             
         elif self.current_state == 'SEARCH_AIRLOCK_ARUCO':
             if not getattr(self, 'airlock_search_started', False):
-                self.get_logger().info("Airlock GPS hedefine varıldı. ArUco aranıyor (kendi etrafında dönüş)...")
+                self.get_logger().info("Airlock GPS hedefine varıldı. ArUco (ID 1) aranıyor...")
                 self.accumulated_yaw = 0.0
                 self.last_yaw = self.current_yaw
+                self.airlock_wait_counter = 600
                 self.publish_spin_cmd(activate=True)
                 self.airlock_search_started = True
             else:
-                if self.aruco_detected:
+                self.airlock_wait_counter -= 1
+                if self.airlock_wait_counter <= 0 or (hasattr(self, 'accumulated_yaw') and abs(self.accumulated_yaw) >= 2 * math.pi):
+                    self.get_logger().warn("Airlock ArUco 360 derece taranmasına rağmen bulunamadı! Timeout doldu, körlemesine giriliyor...")
+                    self.current_state = 'ENTER_AIRLOCK'
+                    self.airlock_search_started = False
+                    self.accumulated_yaw = 0.0
+                    return
+                
+                if self.aruco_detected and getattr(self, 'aruco_id', -1) == 1:
                     # ArUco'yu dinamik olarak ekranın ortasına hizala (Çözünürlüğe göre otomatik)
                     error = self.image_center_x - getattr(self, 'aruco_x', self.image_center_x)
                     
                     if abs(error) < 40: # 40 piksel toleransla ortalandı
-                        self.get_logger().info("Airlock kapısı ortalandı! İçeri giriliyor...")
+                        self.get_logger().info("Airlock kapısı (ID 1) ortalandı! İçeri giriliyor...")
                         self.publish_spin_cmd(activate=False)
                         self.current_state = 'ENTER_AIRLOCK'
                         self.airlock_search_started = False
@@ -863,7 +896,6 @@ class AutonomousMissionController(Node):
                         self.cmd_vel_pub.publish(twist)
                 else:
                     self.publish_spin_cmd(activate=True)
-                    # ArUco bulunana kadar sonsuza dek dönmeye devam eder (Timeout yok)
             
 
         elif self.current_state == 'ENTER_AIRLOCK':

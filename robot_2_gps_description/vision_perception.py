@@ -96,6 +96,13 @@ class VisionPerceptionNode(Node):
             pt.y = float(avg_y)
             pt.z = float(ids[0][0]) # ID of the first detected marker (e.g. M1 or M2)
             self.aruco_pub.publish(pt)
+        else:
+            # ArUco kaybolduğunda kalıcı (sticky) kalmaması için boş koordinat yayınla
+            pt = Point()
+            pt.x = -1.0
+            pt.y = -1.0
+            pt.z = 0.0
+            self.aruco_pub.publish(pt)
 
     def detect_ilmenite_rock(self, cv_image):
         # 1. Görüntüyü HSV formatına çevir
